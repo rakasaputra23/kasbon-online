@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Kasbon Online',
     'title_prefix' => '',
-    'title_postfix' => '',
+    'title_postfix' => ' - Sistem Kasbon',
 
     /*
     |--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Kasbon</b> Online',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -154,7 +154,7 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -223,6 +223,7 @@ return [
     'sidebar_scrollbar_auto_hide' => 'l',
     'sidebar_nav_accordion' => true,
     'sidebar_nav_animation_speed' => 300,
+    'sidebar_fixed' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -257,12 +258,13 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
+    'logout_method' => 'post',
     'login_url' => 'login',
-    'register_url' => 'register',
+    'register_url' => 'false',
     'password_reset_url' => 'password/reset',
-    'password_email_url' => 'password/email',
+    'password_email_url' => 'forgot-password',
     'profile_url' => false,
     'disable_darkmode_routes' => false,
 
@@ -299,6 +301,31 @@ return [
     */
 
     'menu' => [
+
+        [
+        'header' => 'MAIN NAVIGATION',
+    ],
+    [
+        'text' => 'Dashboard',
+        'url' => 'admin/dashboard',
+        'icon' => 'fas fa-tachometer-alt',
+    ],
+    [
+        'text' => 'Kasbon',
+        'icon' => 'fas fa-money-bill-wave',
+        'submenu' => [
+            [
+                'text' => 'New Request',
+                'url' => '#',
+                'icon' => 'fas fa-plus',
+            ],
+            [
+                'text' => 'My Requests',
+                'url' => '#',
+                'icon' => 'fas fa-list',
+            ],
+        ],
+    ],
         // Navbar items:
         [
             'type' => 'navbar-search',
