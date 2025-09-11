@@ -1,92 +1,114 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard - Kasbon System')
+@section('page_title', 'Dashboard')
 
 @section('content')
-<div class="container-fluid">
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <div class="text-muted">
-            <i class="fas fa-clock me-1"></i>
-            <span id="current-time"></span>
+<!-- Content Row - Statistics -->
+<div class="row">
+    <!-- Total Users Card -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>{{ $totalUsers }}</h3>
+                <p>Total Users</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <a href="{{ route('user') }}" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
         </div>
     </div>
     
-    <!-- Content Row - Statistics -->
-    <div class="row">
-        <!-- Total Users Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Users
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUsers }}</div>
+    <!-- Total User Groups Card -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>{{ $totalUserGroups }}</h3>
+                <p>User Groups</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user-tag"></i>
+            </div>
+            <a href="{{ route('user.group') }}" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Active Users Card -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>{{ $activeUsers }}</h3>
+                <p>Active Users</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- System Status Card -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3><i class="fas fa-server"></i></h3>
+                <p>System Status: <span class="badge badge-success">Online</span></p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-server"></i>
+            </div>
+            <a href="#" class="small-box-footer" onclick="showSystemInfo()">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Content Row -->
+<div class="row">
+    <!-- Welcome Card -->
+    <div class="col-md-6">
+        <div class="card card-widget widget-user">
+            <div class="widget-user-header bg-info">
+                <h3 class="widget-user-username">{{ $user->nama }}</h3>
+                <h5 class="widget-user-desc">{{ $user->posisi }}</h5>
+                <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="{{ asset('dist/img/user2-160x160.jpg') }}" alt="User Avatar">
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-6 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header">{{ $user->nip }}</h5>
+                            <span class="description-text">NIP</span>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="description-block">
+                            <h5 class="description-header">
+                                <span class="badge badge-primary">
+                                    {{ $user->userGroup ? $user->userGroup->name : 'No Group' }}
+                                </span>
+                            </h5>
+                            <span class="description-text">GROUP</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Total User Groups Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                User Groups
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUserGroups }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-user-tag fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Active Users Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Active Users
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $activeUsers }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-user-check fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- System Status Card -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                System Status
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <span class="badge bg-success">Online</span>
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-server fa-2x text-gray-300"></i>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <p><strong>Email:</strong> {{ $user->email }}</p>
+                        <div class="text-center">
+                            <a href="{{ route('profile.edit') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -94,116 +116,107 @@
         </div>
     </div>
     
-    <!-- Content Row -->
-    <div class="row">
-        <!-- Welcome Card -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Welcome, {{ $user->nama }}!</h6>
-                    <div class="dropdown no-arrow">
-                        <i class="fas fa-user fa-sm text-gray-400"></i>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <p class="mb-2"><strong>NIP:</strong> {{ $user->nip }}</p>
-                            <p class="mb-2"><strong>Posisi:</strong> {{ $user->posisi }}</p>
-                            <p class="mb-2"><strong>Email:</strong> {{ $user->email }}</p>
-                            <p class="mb-2"><strong>Group:</strong> 
-                                <span class="badge bg-primary">{{ $user->userGroup ? $user->userGroup->name : 'No Group' }}</span>
-                            </p>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <div class="avatar-circle">
-                                <i class="fas fa-user fa-3x text-gray-400"></i>
-                            </div>
-                            <div class="mt-2">
-                                <a href="{{ route('profile.edit') }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit me-1"></i>Edit Profile
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Recent Users -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Users</h6>
-                    <a href="{{ route('user') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-arrow-right me-1"></i>View All
+    <!-- Recent Users -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-users mr-1"></i>
+                    Recent Users
+                </h3>
+                <div class="card-tools">
+                    <a href="{{ route('user') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-arrow-right"></i> View All
                     </a>
                 </div>
-                <div class="card-body">
-                    @if($recentUsers->count() > 0)
-                        <div class="list-group list-group-flush">
-                            @foreach($recentUsers as $recentUser)
-                            <div class="list-group-item px-0">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <div class="avatar-sm">
-                                            <i class="fas fa-user text-gray-400"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0">{{ $recentUser->nama }}</h6>
-                                        <small class="text-muted">{{ $recentUser->posisi }}</small>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="badge bg-secondary">{{ $recentUser->userGroup ? $recentUser->userGroup->name : 'No Group' }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <div class="text-center py-4">
-                            <i class="fas fa-users fa-3x text-gray-300 mb-3"></i>
-                            <p class="text-muted">Belum ada user yang terdaftar.</p>
-                        </div>
-                    @endif
-                </div>
+            </div>
+            <div class="card-body">
+                @if($recentUsers->count() > 0)
+                    <ul class="users-list clearfix">
+                        @foreach($recentUsers->take(8) as $recentUser)
+                        <li>
+                            <img src="{{ asset('dist/img/user2-160x160.jpg') }}" alt="User Image">
+                            <a class="users-list-name" href="#">{{ $recentUser->nama }}</a>
+                            <span class="users-list-date">{{ $recentUser->posisi }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <div class="text-center">
+                        <i class="fas fa-users fa-3x text-gray mb-3"></i>
+                        <p class="text-muted">Belum ada user yang terdaftar.</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
-    
-    <!-- Quick Actions -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <a href="{{ route('user') }}" class="btn btn-outline-primary btn-block h-100">
-                                <i class="fas fa-users fa-2x mb-2"></i><br>
-                                Manage Users
-                            </a>
+</div>
+
+<!-- Quick Actions -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-bolt mr-1"></i>
+                    Quick Actions
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-primary"><i class="fas fa-users"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Manage Users</span>
+                                <span class="info-box-number">
+                                    <a href="{{ route('user') }}" class="btn btn-primary btn-sm">
+                                        Go to Users
+                                    </a>
+                                </span>
+                            </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{{ route('user.group') }}" class="btn btn-outline-success btn-block h-100">
-                                <i class="fas fa-user-tag fa-2x mb-2"></i><br>
-                                User Groups
-                            </a>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-success"><i class="fas fa-user-tag"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">User Groups</span>
+                                <span class="info-box-number">
+                                    <a href="{{ route('user.group') }}" class="btn btn-success btn-sm">
+                                        Go to Groups
+                                    </a>
+                                </span>
+                            </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{{ route('profile') }}" class="btn btn-outline-info btn-block h-100">
-                                <i class="fas fa-user-cog fa-2x mb-2"></i><br>
-                                My Profile
-                            </a>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info"><i class="fas fa-user-cog"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">My Profile</span>
+                                <span class="info-box-number">
+                                    <a href="{{ route('profile') }}" class="btn btn-info btn-sm">
+                                        View Profile
+                                    </a>
+                                </span>
+                            </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <button class="btn btn-outline-warning btn-block h-100" onclick="showSystemInfo()">
-                                <i class="fas fa-info-circle fa-2x mb-2"></i><br>
-                                System Info
-                            </button>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-warning"><i class="fas fa-info-circle"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">System Info</span>
+                                <span class="info-box-number">
+                                    <button class="btn btn-warning btn-sm" onclick="showSystemInfo()">
+                                        View Info
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,42 +225,24 @@
     </div>
 </div>
 
-<style>
-.border-left-primary {
-    border-left: 0.25rem solid #007bff !important;
-}
-.border-left-success {
-    border-left: 0.25rem solid #28a745 !important;
-}
-.border-left-info {
-    border-left: 0.25rem solid #17a2b8 !important;
-}
-.border-left-warning {
-    border-left: 0.25rem solid #ffc107 !important;
-}
-.avatar-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-}
-.avatar-sm {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.btn-block {
-    width: 100%;
-}
-</style>
+<!-- Time Display Card -->
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-clock mr-1"></i>
+                    Current Time
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <h4 id="current-time" class="text-primary"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -274,7 +269,7 @@ function showSystemInfo() {
     Swal.fire({
         title: 'System Information',
         html: `
-            <div class="text-start">
+            <div class="text-left">
                 <p><strong>Application:</strong> Kasbon Online System</p>
                 <p><strong>Version:</strong> 1.0.0</p>
                 <p><strong>Framework:</strong> Laravel 10</p>

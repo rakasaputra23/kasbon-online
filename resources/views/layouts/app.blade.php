@@ -6,152 +6,176 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Kasbon Online System')</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- AdminLTE Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
     
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet">
     
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
     
     <!-- Custom CSS -->
     <style>
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 255px;
-            background: #343a40;
-            z-index: 1000;
-            overflow-y: auto;
+        .brand-image {
+            opacity: 1;
+            width: 33px;
+            height: 33px;
+            object-fit: contain;
+            border-radius: 50%;
+            background-color: white;
+            padding: 2px;
         }
         
-        .main-content {
-            margin-left: 255px;
-            padding: 0;
-            min-height: 100vh;
+        .main-sidebar .nav-link {
+            transition: all 0.3s ease;
+        }
+        
+        .main-sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-sidebar .nav-link.active {
+            background-color: #007bff !important;
+            color: white !important;
         }
         
         .content-wrapper {
-            padding: 20px;
-        }
-        
-        .sidebar .nav-link {
-            color: #c2c7d0;
-            padding: 12px 20px;
-            border-radius: 0;
-            transition: all 0.3s;
-        }
-        
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background: #495057;
-            color: #fff;
-        }
-        
-        .sidebar .nav-link.active {
-            background: #007bff;
-        }
-        
-        .sidebar .collapse .nav-link {
-            padding-left: 40px;
-            font-size: 0.9em;
+            background: #f4f6f9;
         }
         
         .card {
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border: none;
+            box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
         }
         
-        .table th {
-            background: #f8f9fa;
-            border-color: #dee2e6;
+        .navbar-nav .nav-link {
+            display: flex;
+            align-items: center;
         }
         
-        .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
+        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
+            background-color: #007bff;
         }
         
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Custom scrollbar for sidebar */
+        .main-sidebar::-webkit-scrollbar {
+            width: 6px;
         }
         
-        .breadcrumb {
-            background: none;
-            padding: 0;
-            margin-bottom: 20px;
+        .main-sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
         }
         
-        .sidebar-brand {
-            padding: 15px 20px;
-            background: #212529;
-            border-bottom: 1px solid #495057;
+        .main-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
         }
         
-        .sidebar-brand-text {
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .sidebar-heading {
-            color: #6c757d;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 15px 20px 5px;
-            margin: 0;
-        }
-        
-        .nav-item {
-            margin-bottom: 2px;
-        }
-        
-        .collapse-arrow {
-            transition: transform 0.3s;
-        }
-        
-        .collapsed .collapse-arrow {
-            transform: rotate(-90deg);
+        .main-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
         }
     </style>
     
     @stack('styles')
 </head>
-<body>
-    <!-- Sidebar -->
-    @include('layouts.sidebar')
-    
-    <!-- Main Content -->
-    <div class="main-content">
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
         <!-- Navbar -->
         @include('layouts.navbar')
         
-        <!-- Content -->
+        <!-- Main Sidebar Container -->
+        @include('layouts.sidebar')
+        
+        <!-- Content Wrapper -->
         <div class="content-wrapper">
-            @yield('content')
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">@yield('page_title', 'Dashboard')</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('dashboard') }}">
+                                        <i class="fas fa-home"></i> Home
+                                    </a>
+                                </li>
+                                @if(isset($breadcrumbs))
+                                    @foreach($breadcrumbs as $breadcrumb)
+                                        @if($loop->last)
+                                            <li class="breadcrumb-item active">
+                                                {{ $breadcrumb['title'] }}
+                                            </li>
+                                        @else
+                                            <li class="breadcrumb-item">
+                                                <a href="{{ $breadcrumb['url'] }}">
+                                                    {{ $breadcrumb['title'] }}
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    @if(request()->routeIs('user'))
+                                        <li class="breadcrumb-item active">User Management</li>
+                                    @elseif(request()->routeIs('user.group'))
+                                        <li class="breadcrumb-item active">User Groups</li>
+                                    @elseif(request()->routeIs('dashboard'))
+                                        <li class="breadcrumb-item active">Dashboard</li>
+                                    @endif
+                                @endif
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
+            </section>
         </div>
+        
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; {{ date('Y') }} <a href="#">Kasbon Online System</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
     </div>
     
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
     
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
     
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -174,7 +198,9 @@
                 title: title,
                 text: text,
                 timer: 3000,
-                showConfirmButton: false
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
             });
         };
         
@@ -198,7 +224,27 @@
         // Initialize Select2
         $(document).ready(function() {
             $('.select2').select2({
-                theme: 'bootstrap-5'
+                theme: 'bootstrap4'
+            });
+            
+            // Initialize DataTables
+            $('.data-table').DataTable({
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data per halaman",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                    infoFiltered: "(disaring dari _MAX_ total data)",
+                    paginate: {
+                        first: "Pertama",
+                        last: "Terakhir",
+                        next: "Selanjutnya",
+                        previous: "Sebelumnya"
+                    },
+                    emptyTable: "Tidak ada data yang tersedia"
+                }
             });
         });
     </script>
