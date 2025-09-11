@@ -1,12 +1,14 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="{{ route('dashboard') }}" class="brand-link">
-    <img src="{{ asset('dist/img/logo-login.png') }}" 
+    <img src="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}" 
          alt="Logo Kasbon" 
-         class="brand-image img-circle elevation-3"
-         style="opacity: .8; width: 33px; height: 33px;">
-    <span class="brand-text font-weight-light">Kasbon Online</span>
-  </a>
+         class="brand-image elevation-0"
+         style="width: 32px; height: 32px; object-fit: contain; background: transparent; margin-top: -3px;">
+    <span class="brand-text font-weight-light" style="font-size: 15px; margin-left: 6px;">Kasbon Online</span>
+</a>
+
+
 
   <!-- Sidebar -->
   <div class="sidebar">
@@ -236,6 +238,19 @@
 .nav-treeview {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+.brand-link .brand-image {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    background: transparent;
+    box-shadow: none !important;
+}
+.brand-link .brand-text {
+    font-size: 15px;
+    margin-left: 6px;
+}
+
 </style>
 
 <script>
