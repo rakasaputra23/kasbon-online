@@ -12,6 +12,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'nip',
         'nama',
@@ -21,37 +26,66 @@ class User extends Authenticatable
         'password',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    // Relationship dengan user_groups
+    /**
+     * Get the user group that owns the user.
+     */
     public function userGroup()
     {
-        return $this->belongsTo(UserGroup::class, 'user_group_id');
+        return $this->belongsTo(UserGroup::class);
     }
 
-    // Method untuk mendapatkan nama lengkap
-    public function getFullNameAttribute()
+    /**
+     * Check if user is superadmin
+     */
+    public function isSuperAdmin()
     {
-        return $this->nama;
+        return $this->userGroup && $this->userGroup->name === 'Admin';
     }
 
-    // Method untuk cek role
-    public function hasRole($role)
+    /**
+     * Get first accessible route for user
+     */
+    public function getFirstAccessibleRoute()
     {
-        return $this->userGroup && $this->userGroup->name === $role;
+        // For demo purposes, return dashboard if user has any group
+        if ($this->userGroup) {
+            return 'dashboard';
+        }
+        
+        return null;
     }
 
-    // Method untuk cek multiple roles
-    public function hasAnyRole(array $roles)
+    /**
+     * Check if user has permission
+     */
+    public function hasPermission($permission)
     {
-        return $this->userGroup && in_array($this->userGroup->name, $roles);
+        // For demo purposes, admin has all permissions
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        // Basic permission check based on user group
+        return $this->userGroup !== null;
     }
 }

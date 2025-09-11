@@ -9,14 +9,21 @@ class UserGroup extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
     ];
 
-    // Relationship dengan users
+    /**
+     * Get the users for the user group.
+     */
     public function users()
     {
-        return $this->hasMany(User::class, 'user_group_id');
+        return $this->hasMany(User::class);
     }
 }

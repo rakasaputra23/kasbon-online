@@ -1,62 +1,101 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserGroupController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+// ==========================
+// 🔐 AUTH ROUTES
+// ==========================
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Form Lupa Password (input NIP untuk kirim email)
+Route::get('/password/reset', [AuthController::class, 'showForgotPassword'])->name('password.request');
+
+// Kirim email reset password
+Route::post('/password/email', [AuthController::class, 'sendResetPasswordEmail'])->name('password.email');
+
+// Form Reset Password (dari email atau manual)
+Route::get('/password/reset/form', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
+
+// ==========================
+// 🔒 PROTECTED ROUTES
+// ==========================
+Route::middleware(['auth', 'permission'])->group(function () {
+
+    // ==========================
+    // 🏠 DASHBOARD
+    // ==========================
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // PROFILE ROUTES
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [UserController::class, 'profile'])->name('profile');
+        Route::get('/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+        Route::put('/', [UserController::class, 'updateProfile'])->name('profile.update');
+    });
+
+    // ==========================
+    // 👥 USER MANAGEMENT
+    // ==========================
+    Route::get('/user', [UserController::class, 'index'])->name('user');
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/data', [UserController::class, 'getData'])->name('getData');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::get('/{id}', [UserController::class, 'show'])->name('show');
+        Route::put('/{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::get('/user-group', [UserGroupController::class, 'index'])->name('user.group');
+    Route::prefix('user-group')->name('user.group.')->group(function () {
+        Route::get('/data', [UserGroupController::class, 'getData'])->name('getData');
+        Route::post('/', [UserGroupController::class, 'store'])->name('store');
+        Route::get('/{id}', [UserGroupController::class, 'show'])->name('show');
+        Route::put('/{id}', [UserGroupController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserGroupController::class, 'destroy'])->name('destroy');
+        Route::get('/{id}/permissions', [UserGroupController::class, 'getPermissions'])->name('permissions');
+    });
+
+});
+
+// ==========================
+// 🔄 REDIRECTS
+// ==========================
+
+// Route root - redirect ke halaman yang user bisa akses
 Route::get('/', function () {
-    return redirect('/dashboard');
-});
-
-// Default dashboard route (will be handled by middleware in dashboard route)
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-    
-    if ($user->hasRole('Admin')) {
-        return redirect()->route('admin.dashboard');
-    } elseif ($user->hasAnyRole(['Kepala Departemen', 'Kepala Divisi', 'Supervisor'])) {
-        return redirect()->route('approval.dashboard');
-    } elseif ($user->hasRole('Finance')) {
-        return redirect()->route('finance.dashboard');
-    } else {
-        return redirect()->route('staff.dashboard');
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Protected Routes
-Route::middleware('auth')->group(function () {
-    // Profile routes (from Breeze)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    // Admin Routes
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    });
+    $user = Auth::user();
+    
+    // Jika superadmin, langsung ke dashboard
+    if ($user->isSuperAdmin()) {
+        return redirect()->route('dashboard');
+    }
+    
+    // Cari route pertama yang bisa diakses
+    $firstAccessibleRoute = $user->getFirstAccessibleRoute();
+    
+    if ($firstAccessibleRoute) {
+        return redirect()->route($firstAccessibleRoute);
+    }
+    
+    // Jika tidak ada permission sama sekali, logout
+    Auth::logout();
+    return redirect()->route('login')->with('error', 'Akun Anda tidak memiliki akses ke sistem. Silakan hubungi administrator.');
+    
+})->middleware('auth')->name('root');
 
-    // Staff Routes  
-    Route::prefix('staff')->name('staff.')->group(function () {
-        Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
-    });
-
-    // Approval Routes
-    Route::prefix('approval')->name('approval.')->group(function () {
-        Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
-    });
-
-    // Finance Routes
-    Route::prefix('finance')->name('finance.')->group(function () {
-        Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
-    });
-});
-
-// Include Breeze auth routes
-require __DIR__.'/auth.php';
+// Route home - sama seperti root
+Route::get('/home', function () {
+    return redirect('/');
+})->middleware('auth')->name('home');
