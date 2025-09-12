@@ -1,19 +1,14 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-primary navbar-light">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars text-white"></i>
       </a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="{{ route('dashboard') }}" class="nav-link">
+      <a href="{{ route('dashboard') }}" class="nav-link text-white">
         <i class="fas fa-home mr-1"></i>Home
-      </a>
-    </li>
-    <li class="nav-item d-none d-md-inline-block">
-      <a href="{{ route('dashboard') }}" class="nav-link">
-        <i class="fas fa-tachometer-alt mr-1"></i>Dashboard
       </a>
     </li>
   </ul>
@@ -38,7 +33,7 @@
 
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#">
+      <a class="nav-link text-white" data-toggle="dropdown" href="#">
         <i class="far fa-bell"></i>
         <span class="badge badge-warning navbar-badge">{{ count($notifications) }}</span>
       </a>
@@ -60,7 +55,7 @@
 
     <!-- Messages Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#">
+      <a class="nav-link text-white" data-toggle="dropdown" href="#">
         <i class="far fa-comments"></i>
         <span class="badge badge-danger navbar-badge">{{ count($messages) }}</span>
       </a>
@@ -102,13 +97,13 @@
     @if($user)
       <!-- User Dropdown -->
       <li class="nav-item dropdown user-menu">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle text-white" data-toggle="dropdown">
           <i class="fas fa-user-circle user-icon"></i>
           <span class="d-none d-md-inline">{{ $user->nama }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <!-- User icon header -->
-          <li class="user-header bg-primary">
+          <li class="user-header bg-primary-custom">
             <i class="fas fa-user-circle user-icon-large"></i>
             <p>
               {{ $user->nama }}
@@ -156,9 +151,48 @@
   </ul>
 </nav>
 
-<!-- AdminLTE Style CSS -->
+<!-- Enhanced CSS dengan tema biru elegan yang match dengan sidebar -->
 <style>
-/* Navbar badge styling */
+/* Navbar styling dengan gradient biru elegan */
+.main-header.navbar-primary {
+    background: linear-gradient(135deg, #2c5282 0%, #3182ce 50%, #4299e1 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar link styling */
+.navbar-primary .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    margin: 0 2px;
+    padding: 8px 12px !important;
+}
+
+.navbar-primary .navbar-nav .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-primary .navbar-nav .nav-link:focus {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Pushmenu button special styling */
+.nav-link[data-widget="pushmenu"] {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+.nav-link[data-widget="pushmenu"]:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-1px);
+}
+
+/* Badge styling dengan efek subtle */
 .navbar-badge {
     font-size: 0.7rem;
     font-weight: 700;
@@ -166,45 +200,71 @@
     position: absolute;
     right: -0.375rem;
     top: -0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.9);
 }
 
-/* Notification and message dropdown styling */
+.badge-warning {
+    background: linear-gradient(135deg, #f6ad55, #ed8936);
+    color: #ffffff;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #fc8181, #e53e3e);
+    color: #ffffff;
+}
+
+/* Dropdown menu enhancements */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
 .dropdown-menu-lg {
     min-width: 280px;
-}
-
-.dropdown-item-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin: 0 0 0.25rem 0;
 }
 
 .dropdown-header {
     font-size: 0.875rem;
     font-weight: 600;
-    padding: 0.5rem 1.5rem;
-    background-color: #f8f9fa;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     border-bottom: 1px solid #dee2e6;
+    color: #495057;
 }
 
 .dropdown-footer {
     font-size: 0.875rem;
     font-weight: 600;
     text-align: center;
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     border-top: 1px solid #dee2e6;
+    transition: all 0.3s ease;
 }
 
 .dropdown-footer:hover {
-    background-color: #e9ecef;
+    background: linear-gradient(135deg, #e9ecef, #dee2e6);
     color: #495057;
     text-decoration: none;
 }
 
-/* Message media styling */
+.dropdown-item {
+    transition: all 0.2s ease;
+    border-radius: 0;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(44, 82, 130, 0.08);
+    transform: translateX(2px);
+}
+
+/* Message media styling enhancements */
 .media {
     display: flex;
     align-items: flex-start;
+    padding: 0.5rem 0;
 }
 
 .media-object {
@@ -221,9 +281,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #6c757d;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     border-radius: 50%;
     margin-right: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .avatar-placeholder i {
@@ -234,13 +295,14 @@
 .img-size-50 {
     width: 50px;
     height: 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .img-circle {
     border-radius: 50%;
 }
 
-/* User menu dropdown styling */
+/* User menu dropdown styling dengan tema yang konsisten */
 .user-menu .dropdown-menu {
     border-top: 0;
     padding: 0;
@@ -248,88 +310,97 @@
     width: 280px;
 }
 
-/* User icon styling */
+/* User icon styling dengan warna putih untuk navbar biru */
 .user-icon {
     font-size: 2.1rem;
-    color: #6c757d;
+    color: rgba(255, 255, 255, 0.9);
     margin-right: 0.5rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .user-icon-large {
     font-size: 5rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* User header */
-.user-header {
+/* User header dengan gradient yang match */
+.user-header.bg-primary-custom {
+    background: linear-gradient(135deg, #2c5282 0%, #3182ce 50%, #4299e1 100%) !important;
     height: 175px;
     padding: 30px 25px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.user-header.bg-primary-custom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" patternUnits="userSpaceOnUse" width="100" height="100"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
 }
 
 .user-header p {
     z-index: 5;
     color: #fff;
-    color: rgba(255, 255, 255, 0.8);
     font-size: 17px;
     margin-top: 10px;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .user-header small {
     display: block;
     font-size: 12px;
+    opacity: 0.9;
 }
 
-/* User footer */
+/* User footer dengan styling yang lebih modern */
 .user-footer {
-    background-color: #f4f4f4;
+    background-color: #f8f9fa;
     padding: 15px;
 }
 
 .user-footer .btn-flat {
-    border-radius: 0;
+    border-radius: 6px;
     border-width: 1px;
     font-size: 14px;
+    transition: all 0.3s ease;
 }
 
-/* Dropdown toggle */
+.user-footer .btn-default:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-footer .btn-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Dropdown toggle styling */
 .user-menu .nav-link.dropdown-toggle::after {
     border: none;
     content: "\f0d7";
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     margin-left: 6px;
+    transition: transform 0.3s ease;
 }
 
-.user-menu .nav-link:hover,
-.nav-item .nav-link:hover {
-    background-color: rgba(0,0,0,0.1);
-    border-radius: 4px;
+.user-menu .nav-link.dropdown-toggle:hover::after {
+    transform: rotate(180deg);
 }
 
-/* Badge colors */
-.badge-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.badge-danger {
-    background-color: #dc3545;
-    color: #fff;
-}
-
-.badge-success {
-    background-color: #28a745;
-    color: #fff;
-}
-
-.badge-info {
-    background-color: #17a2b8;
-    color: #fff;
-}
-
-/* Text colors for icons */
+/* Text colors untuk icons dengan kontras yang baik */
 .text-success { color: #28a745 !important; }
 .text-warning { color: #ffc107 !important; }
 .text-info { color: #17a2b8 !important; }
@@ -347,33 +418,60 @@
         right: -0.25rem;
         top: -0.25rem;
     }
+    
+    .navbar-primary .navbar-nav .nav-link {
+        padding: 6px 8px !important;
+    }
 }
 
-/* Notification and message dropdown hover effects */
-.dropdown-item:hover {
-    background-color: #f8f9fa;
-}
-
-/* Animation for badges */
-.navbar-badge {
-    animation: pulse 2s infinite;
-}
-
+/* Enhanced animations */
 @keyframes pulse {
     0% {
         transform: scale(1);
     }
     50% {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
     100% {
         transform: scale(1);
     }
 }
+
+.navbar-badge {
+    animation: pulse 3s ease-in-out infinite;
+}
+
+/* Subtle hover animations untuk dropdown items */
+.dropdown-item-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    transition: color 0.2s ease;
+}
+
+.dropdown-item:hover .dropdown-item-title {
+    color: #2c5282;
+}
+
+/* Loading shimmer effect untuk avatar placeholder */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.avatar-placeholder {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+}
 </style>
 
 <script>
-// Simple logout confirmation
+// Simple logout confirmation dengan tema yang konsisten
 function confirmLogout(element) {
     if (typeof Swal !== 'undefined') {
         Swal.fire({
@@ -384,7 +482,11 @@ function confirmLogout(element) {
             confirmButtonColor: '#dc3545',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'Yes, Logout',
-            cancelButtonText: 'Cancel'
+            cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'rounded-3'
+            },
+            buttonsStyling: true
         }).then((result) => {
             if (result.isConfirmed) {
                 element.closest('form').submit();
@@ -397,15 +499,44 @@ function confirmLogout(element) {
     }
 }
 
-// Mark notification as read (optional)
+// Mark notification as read dengan feedback visual
 function markNotificationAsRead(notificationId) {
-    // Add your AJAX call here to mark notification as read
     console.log('Marking notification ' + notificationId + ' as read');
+    // Tambahkan efek visual saat notification dibaca
+    const badge = document.querySelector('.badge-warning');
+    if (badge) {
+        badge.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            badge.style.transform = 'scale(1)';
+        }, 150);
+    }
 }
 
-// Mark message as read (optional)
+// Mark message as read dengan feedback visual
 function markMessageAsRead(messageId) {
-    // Add your AJAX call here to mark message as read
     console.log('Marking message ' + messageId + ' as read');
+    // Tambahkan efek visual saat message dibaca
+    const badge = document.querySelector('.badge-danger');
+    if (badge) {
+        badge.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            badge.style.transform = 'scale(1)';
+        }, 150);
+    }
 }
+
+// Initialize navbar interactions
+$(document).ready(function() {
+    // Smooth animations untuk dropdown
+    $('.dropdown-toggle').on('click', function() {
+        $(this).next('.dropdown-menu').fadeIn(200);
+    });
+    
+    // Auto-hide dropdowns when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown-menu').fadeOut(150);
+        }
+    });
+});
 </script>
