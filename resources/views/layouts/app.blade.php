@@ -198,43 +198,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">@yield('page_title', 'Dashboard')</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('dashboard') }}">
-                                        <i class="fas fa-home"></i> Home
-                                    </a>
-                                </li>
-                                @if(isset($breadcrumbs))
-                                    @foreach($breadcrumbs as $breadcrumb)
-                                        @if($loop->last)
-                                            <li class="breadcrumb-item active">
-                                                {{ $breadcrumb['title'] }}
-                                            </li>
-                                        @else
-                                            <li class="breadcrumb-item">
-                                                <a href="{{ $breadcrumb['url'] }}">
-                                                    {{ $breadcrumb['title'] }}
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endforeach
-                                @else
-                                    @if(request()->routeIs('user'))
-                                        <li class="breadcrumb-item active">User Management</li>
-                                    @elseif(request()->routeIs('user.group'))
-                                        <li class="breadcrumb-item active">User Groups</li>
-                                    @elseif(request()->routeIs('dashboard'))
-                                        <li class="breadcrumb-item active">Dashboard</li>
-                                    @endif
-                                @endif
-                            </ol>
-                        </div>
-                    </div>
+                    @yield('header')
                 </div>
             </div>
             

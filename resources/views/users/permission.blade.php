@@ -9,8 +9,12 @@
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item active">Permissions</li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('dashboard') }}">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Permission</li>
         </ol>
     </div>
 </div>
