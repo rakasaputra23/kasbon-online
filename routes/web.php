@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserGroupController;
+use App\Http\Controllers\PermissionController;
 
 // ==========================
 // 🔐 AUTH ROUTES
@@ -49,6 +50,7 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
 
+
     Route::get('/user-group', [UserGroupController::class, 'index'])->name('user.group');
     Route::prefix('user-group')->name('user.group.')->group(function () {
         Route::get('/data', [UserGroupController::class, 'getData'])->name('getData');
@@ -57,6 +59,18 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::put('/{id}', [UserGroupController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserGroupController::class, 'destroy'])->name('destroy');
         Route::get('/{id}/permissions', [UserGroupController::class, 'getPermissions'])->name('permissions');
+    });
+
+    // ==========================
+    // 🔑 PERMISSION MANAGEMENT
+    // ==========================
+    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::prefix('permissions')->name('permissions.')->group(function () {
+        Route::get('/data', [PermissionController::class, 'getData'])->name('getData');
+        Route::post('/', [PermissionController::class, 'store'])->name('store');
+        Route::get('/{id}', [PermissionController::class, 'show'])->name('show');
+        Route::put('/{id}', [PermissionController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PermissionController::class, 'destroy'])->name('destroy');
     });
 
 });

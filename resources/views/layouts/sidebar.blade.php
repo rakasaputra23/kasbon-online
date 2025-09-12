@@ -4,11 +4,10 @@
     <img src="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}" 
          alt="Logo Kasbon" 
          class="brand-image elevation-0"
-         style="width: 32px; height: 32px; object-fit: contain; background: transparent; margin-top: -3px;">
+         style="width: 32px; height: 32px; object-fit: contain; background: transparent; margin-top: -3px;"
+         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiMzMTgyQ0UiLz4KPHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeD0iNyIgeT0iNyI+CjxwYXRoIGZpbGw9IndoaXRlIiBkPSJNMTIgMmMtNC40MSAwLTggMy41OS04IDhzMy41OSA4IDggOCA4LTMuNTkgOC04LTMuNTktOC04LTh6TTEyIDE3Yy0zLjg3IDAtNy0zLjEzLTctN3MzLjEzLTcgNy03IDcgMy4xMyA3IDctMy4xMyA3LTcgN3oiLz4KPHA+dGggZmlsbD0id2hpdGUiIGQ9Ik0xMSA1aDJ2N2gtMnpNMTEgMTRoMnYyaC0yeiIvPgo8L3N2Zz4KPC9zdmc+';">
     <span class="brand-text font-weight-light" style="font-size: 15px; margin-left: 6px;">Kasbon Online</span>
-</a>
-
-
+  </a>
 
   <!-- Sidebar -->
   <div class="sidebar">
@@ -17,6 +16,7 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         
         <!-- Dashboard -->
+        @if(Auth::user()->canAccessRoute('dashboard'))
         <li class="nav-item">
           <a href="{{ route('dashboard') }}" 
              class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -24,10 +24,11 @@
             <p>Dashboard</p>
           </a>
         </li>
+        @endif
 
-        <!-- Kasbon Management -->
-        <li class="nav-item {{ request()->routeIs('kasbon.*') ? 'menu-open' : '' }}">
-          <a href="#" class="nav-link {{ request()->routeIs('kasbon.*') ? 'active' : '' }}">
+        <!-- Kasbon Management (DIPERBAIKI: Tambahkan data-widget="treeview") -->
+        <li class="nav-item" data-widget="treeview">
+          <a href="#" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
             <p>
               Kasbon Management
@@ -36,26 +37,29 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('kasbon.index') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('View Kasbon')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>View Kasbon</p>
               </a>
             </li>
+            
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('kasbon.create') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('Create Kasbon')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Create Kasbon</p>
               </a>
             </li>
+            
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('kasbon.pending') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('Pending Approval')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Pending Approval</p>
                 <span class="badge badge-warning right">5</span>
               </a>
             </li>
+            
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('kasbon.history') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('History')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>History</p>
               </a>
@@ -63,9 +67,9 @@
           </ul>
         </li>
 
-        <!-- Reports -->
-        <li class="nav-item {{ request()->routeIs('reports.*') ? 'menu-open' : '' }}">
-          <a href="#" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+        <!-- Reports (DIPERBAIKI: Tambahkan data-widget="treeview") -->
+        <li class="nav-item" data-widget="treeview">
+          <a href="#" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
             <p>
               Reports
@@ -74,19 +78,21 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('reports.monthly') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('Monthly Report')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Monthly Report</p>
               </a>
             </li>
+            
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('reports.yearly') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('Yearly Report')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Yearly Report</p>
               </a>
             </li>
+            
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('reports.employee') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('Employee Report')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Employee Report</p>
               </a>
@@ -94,9 +100,16 @@
           </ul>
         </li>
 
-        <!-- User Management -->
+        <!-- User Management Section (DIPERBAIKI: Tambahkan data-widget="treeview") -->
+        @php
+          $hasUserMgmtAccess = Auth::user()->canAccessRoute('user') || 
+                              Auth::user()->canAccessRoute('user.group') || 
+                              Auth::user()->canAccessRoute('permissions.index');
+        @endphp
+        
+        @if($hasUserMgmtAccess)
         <li class="nav-header">USER MANAGEMENT</li>
-        <li class="nav-item {{ request()->routeIs('user*') || request()->routeIs('permissions.*') ? 'menu-open' : '' }}">
+        <li class="nav-item {{ request()->routeIs('user*') || request()->routeIs('permissions.*') ? 'menu-open' : '' }}" data-widget="treeview">
           <a href="#" class="nav-link {{ request()->routeIs('user*') || request()->routeIs('permissions.*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-users-cog"></i>
             <p>
@@ -105,6 +118,7 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @if(Auth::user()->canAccessRoute('user'))
             <li class="nav-item">
               <a href="{{ route('user') }}" 
                  class="nav-link {{ request()->routeIs('user') && !request()->routeIs('user.group*') ? 'active' : '' }}">
@@ -112,6 +126,9 @@
                 <p>Users</p>
               </a>
             </li>
+            @endif
+            
+            @if(Auth::user()->canAccessRoute('user.group'))
             <li class="nav-item">
               <a href="{{ route('user.group') }}" 
                  class="nav-link {{ request()->routeIs('user.group*') ? 'active' : '' }}">
@@ -119,7 +136,9 @@
                 <p>User Groups</p>
               </a>
             </li>
-            @if(Route::has('permissions.index'))
+            @endif
+            
+            @if(Auth::user()->canAccessRoute('permissions.index') && Route::has('permissions.index'))
             <li class="nav-item">
               <a href="{{ route('permissions.index') }}" 
                  class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}">
@@ -130,11 +149,12 @@
             @endif
           </ul>
         </li>
+        @endif
 
-        <!-- Settings -->
+        <!-- Settings Section (DIPERBAIKI: Tambahkan data-widget="treeview") -->
         <li class="nav-header">SETTINGS</li>
-        <li class="nav-item {{ request()->routeIs('settings.*') ? 'menu-open' : '' }}">
-          <a href="#" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+        <li class="nav-item" data-widget="treeview">
+          <a href="#" class="nav-link">
             <i class="nav-icon fas fa-cogs"></i>
             <p>
               Settings
@@ -143,19 +163,21 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('settings.general') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('General Settings')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>General Settings</p>
               </a>
             </li>
+            
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('settings.notifications') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('Notifications')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Notifications</p>
               </a>
             </li>
+            
             <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('settings.backup') ? 'active' : '' }}">
+              <a href="#" class="nav-link" onclick="showComingSoon('Backup & Restore')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Backup & Restore</p>
               </a>
@@ -163,7 +185,7 @@
           </ul>
         </li>
 
-        <!-- System Info -->
+        <!-- System Info - Always visible for authenticated users -->
         @if(Auth::check())
         <li class="nav-header">SYSTEM</li>
         <li class="nav-item">
@@ -246,43 +268,9 @@
     background: transparent;
     box-shadow: none !important;
 }
+
 .brand-link .brand-text {
     font-size: 15px;
     margin-left: 6px;
 }
-
 </style>
-
-<script>
-// System info dengan styling yang lebih sederhana
-function showSystemInfo() {
-    @if(Auth::check())
-    if (typeof Swal !== 'undefined') {
-        Swal.fire({
-            title: 'System Information',
-            html: `
-                <div style="text-align: left; font-size: 14px;">
-                    <table style="width: 100%; border-spacing: 8px;">
-                        <tr><td><strong>Application:</strong></td><td>Kasbon Online System</td></tr>
-                        <tr><td><strong>Laravel:</strong></td><td>{{ app()->version() }}</td></tr>
-                        <tr><td><strong>PHP:</strong></td><td>{{ phpversion() }}</td></tr>
-                        <tr><td><strong>Environment:</strong></td><td>{{ config('app.env') }}</td></tr>
-                        <tr><td><strong>User:</strong></td><td>{{ Auth::user()->nama ?? 'Unknown' }}</td></tr>
-                        @if(Auth::user()->userGroup)
-                        <tr><td><strong>Role:</strong></td><td>{{ Auth::user()->userGroup->name ?? 'No Group' }}</td></tr>
-                        @endif
-                    </table>
-                </div>
-            `,
-            icon: 'info',
-            confirmButtonText: 'Close',
-            width: 450
-        });
-    } else {
-        alert('System Information:\n\nApplication: Kasbon Online System\nUser: {{ Auth::user()->nama ?? 'Unknown' }}');
-    }
-    @else
-    alert('Please login first');
-    @endif
-}
-</script>

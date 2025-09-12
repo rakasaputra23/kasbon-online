@@ -2,139 +2,208 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
 use App\Models\UserGroup;
+use App\Models\Permission;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use DataTables;
 
 class UserGroupController extends Controller
 {
-    /**
-     * Display a listing of the user groups.
-     */
     public function index()
     {
-        return view('users.usergroup');
+        $permissions = Permission::orderBy('deskripsi')->get();
+        return view('users.usergroup', compact('permissions'));
     }
 
-    /**
-     * Get user groups data for DataTables.
-     */
-    public function getData(Request $request)
+    public function getData()
     {
-        $userGroups = UserGroup::withCount('users');
-
-        return DataTables::of($userGroups)
-            ->addIndexColumn()
-            ->addColumn('total_users', function ($userGroup) {
-                return $userGroup->users_count;
+        $userGroups = UserGroup::withCount('users')->get();
+        
+        return response()->json([
+            'data' => $userGroups->map(function ($group) {
+                return [
+                    'id' => $group->id,
+                    'nama' => $group->name ?? $group->nama,
+                    'description' => $group->description,
+                    'users_count' => $group->users_count,
+                    'created_at' => $group->created_at,
+                ];
             })
-            ->addColumn('tanggal_dibuat', function ($userGroup) {
-                return $userGroup->created_at->format('d/m/Y H:i');
-            })
-            ->addColumn('action', function ($userGroup) {
-                $actions = '';
-                $actions .= '<button class="btn btn-sm btn-info me-1" onclick="viewUserGroup(' . $userGroup->id . ')" title="View"><i class="fas fa-eye"></i></button>';
-                $actions .= '<button class="btn btn-sm btn-warning me-1" onclick="editUserGroup(' . $userGroup->id . ')" title="Edit"><i class="fas fa-edit"></i></button>';
-                $actions .= '<button class="btn btn-sm btn-danger" onclick="deleteUserGroup(' . $userGroup->id . ')" title="Delete"><i class="fas fa-trash"></i></button>';
-                return $actions;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        ]);
     }
 
-    /**
-     * Store a newly created user group in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:user_groups,name',
-            'description' => 'nullable|string',
+            'nama' => 'required|string|max:255',
+            'permissions' => 'array',
+            'permissions.*' => 'exists:permissions,id'
         ]);
 
-        $userGroup = UserGroup::create([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        DB::beginTransaction();
+        try {
+            $userGroup = UserGroup::create([
+                'name' => $request->nama,
+                'description' => $request->description ?? null
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User Group berhasil ditambahkan.',
-            'data' => $userGroup
-        ]);
-    }
+            if ($request->has('permissions')) {
+                $userGroup->permissions()->attach($request->permissions);
+            }
 
-    /**
-     * Display the specified user group.
-     */
-    public function show($id)
-    {
-        $userGroup = UserGroup::withCount('users')->findOrFail($id);
-        
-        return response()->json([
-            'success' => true,
-            'data' => $userGroup
-        ]);
-    }
-
-    /**
-     * Update the specified user group in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        $userGroup = UserGroup::findOrFail($id);
-
-        $request->validate([
-            'name' => 'required|string|max:255|unique:user_groups,name,' . $id,
-            'description' => 'nullable|string',
-        ]);
-
-        $userGroup->update([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User Group berhasil diupdate.',
-            'data' => $userGroup
-        ]);
-    }
-
-    /**
-     * Remove the specified user group from storage.
-     */
-    public function destroy($id)
-    {
-        $userGroup = UserGroup::findOrFail($id);
-        
-        // Check if user group has users
-        if ($userGroup->users()->count() > 0) {
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'User Group berhasil ditambahkan'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => 'User Group tidak dapat dihapus karena masih memiliki user.'
+                'message' => 'Gagal menambahkan User Group: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function show($id)
+    {
+        $userGroup = UserGroup::with(['permissions', 'users'])->findOrFail($id);
+        
+        return response()->json([
+            'userGroup' => [
+                'id' => $userGroup->id,
+                'nama' => $userGroup->name ?? $userGroup->nama,
+                'description' => $userGroup->description,
+                'created_at' => $userGroup->created_at,
+            ],
+            'permissions' => $userGroup->permissions,
+            'users' => $userGroup->users
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'permissions' => 'array',
+            'permissions.*' => 'exists:permissions,id'
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $userGroup = UserGroup::findOrFail($id);
+            
+            // Prevent editing superadmin group name
+            if ($userGroup->id === 1 && $request->nama !== 'Superadmin') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Nama grup Superadmin tidak dapat diubah'
+                ], 403);
+            }
+
+            $userGroup->update([
+                'name' => $request->nama,
+                'description' => $request->description ?? $userGroup->description
+            ]);
+
+            if ($request->has('permissions')) {
+                $userGroup->permissions()->sync($request->permissions);
+            }
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'User Group berhasil diperbarui'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui User Group: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        if ($id == 1) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Grup Superadmin tidak dapat dihapus'
             ], 403);
         }
 
-        $userGroup->delete();
+        DB::beginTransaction();
+        try {
+            $userGroup = UserGroup::findOrFail($id);
+            
+            // Check if group has users
+            if ($userGroup->users()->count() > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User Group tidak dapat dihapus karena masih memiliki user'
+                ], 400);
+            }
+
+            $userGroup->delete();
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'User Group berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus User Group: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getPermissions($id)
+    {
+        $userGroup = UserGroup::with('permissions')->findOrFail($id);
+        $allPermissions = Permission::orderBy('deskripsi')->get();
+        $assignedPermissions = $userGroup->permissions->pluck('id')->toArray();
+
+        // Group permissions by category (optional)
+        $groupedPermissions = [];
+        foreach ($allPermissions as $permission) {
+            $category = $this->getPermissionCategory($permission->route_name);
+            if (!isset($groupedPermissions[$category])) {
+                $groupedPermissions[$category] = [];
+            }
+            $groupedPermissions[$category][] = $permission;
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'User Group berhasil dihapus.'
+            'userGroup' => [
+                'id' => $userGroup->id,
+                'nama' => $userGroup->name ?? $userGroup->nama
+            ],
+            'allPermissions' => $allPermissions,
+            'assignedPermissions' => $assignedPermissions,
+            'groupedPermissions' => $groupedPermissions
         ]);
     }
 
-    /**
-     * Get permissions for user group.
-     */
-    public function getPermissions($id)
+    private function getPermissionCategory($routeName)
     {
-        $userGroup = UserGroup::findOrFail($id);
-        
-        // For demo purposes, return empty array
-        return response()->json([
-            'success' => true,
-            'data' => []
-        ]);
+        if (str_contains($routeName, 'user.group')) {
+            return 'User Group Management';
+        } elseif (str_contains($routeName, 'user.')) {
+            return 'User Management';
+        } elseif (str_contains($routeName, 'permissions.')) {
+            return 'Permission Management';
+        } elseif (str_contains($routeName, 'profile')) {
+            return 'Profile';
+        } else {
+            return 'General';
+        }
     }
 }

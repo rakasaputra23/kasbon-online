@@ -2,21 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'nip',
         'nama',
@@ -26,66 +21,147 @@ class User extends Authenticatable
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    /**
-     * Get the user group that owns the user.
-     */
-    public function userGroup()
+    public function userGroup(): BelongsTo
     {
         return $this->belongsTo(UserGroup::class);
     }
 
-    /**
-     * Check if user is superadmin
-     */
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
-        return $this->userGroup && $this->userGroup->name === 'Admin';
+        return $this->userGroup && $this->userGroup->id === 1;
+    }
+
+    public function hasPermission($routeName): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        return $this->userGroup && $this->userGroup->hasPermission($routeName);
+    }
+
+    public function refreshRelations(): void
+    {
+        $this->load('userGroup.permissions');
     }
 
     /**
      * Get first accessible route for user
      */
-    public function getFirstAccessibleRoute()
+    public function getFirstAccessibleRoute(): ?string
     {
-        // For demo purposes, return dashboard if user has any group
-        if ($this->userGroup) {
+        if ($this->isSuperAdmin()) {
             return 'dashboard';
         }
-        
+
+        // Daftar route yang akan dicek secara berurutan
+        $routesToCheck = [
+            'dashboard',
+            'user',
+            'user.group',
+            'permissions.index',
+            'profile'
+        ];
+
+        // Cek setiap route untuk mencari yang pertama bisa diakses
+        foreach ($routesToCheck as $route) {
+            if ($this->canAccessRoute($route)) {
+                return $route;
+            }
+        }
+
         return null;
     }
 
     /**
-     * Check if user has permission
+     * Check if user can access specific route
      */
-    public function hasPermission($permission)
+    public function canAccessRoute($routeName): bool
     {
-        // For demo purposes, admin has all permissions
         if ($this->isSuperAdmin()) {
             return true;
         }
 
-        // Basic permission check based on user group
-        return $this->userGroup !== null;
+        // Route yang tidak memerlukan permission khusus (accessible for all authenticated users)
+        $publicRoutes = [
+            'profile',
+            'profile.edit',
+            'profile.update'
+        ];
+
+        if (in_array($routeName, $publicRoutes)) {
+            return true;
+        }
+
+        // Untuk route lainnya, cek permission
+        return $this->hasPermission($routeName);
+    }
+
+    /**
+     * Get accessible menu items for user
+     */
+    public function getAccessibleMenus(): array
+    {
+        $menus = [];
+
+        if ($this->canAccessRoute('dashboard')) {
+            $menus[] = [
+                'name' => 'Dashboard',
+                'route' => 'dashboard',
+                'icon' => 'fas fa-tachometer-alt',
+            ];
+        }
+
+        if ($this->canAccessRoute('user')) {
+            $menus[] = [
+                'name' => 'User Management',
+                'route' => 'user',
+                'icon' => 'fas fa-users',
+            ];
+        }
+
+        if ($this->canAccessRoute('user.group')) {
+            $menus[] = [
+                'name' => 'User Groups',
+                'route' => 'user.group',
+                'icon' => 'fas fa-user-tag',
+            ];
+        }
+
+        if ($this->canAccessRoute('permissions.index')) {
+            $menus[] = [
+                'name' => 'Permissions',
+                'route' => 'permissions.index',
+                'icon' => 'fas fa-key',
+            ];
+        }
+
+        return $menus;
+    }
+
+    /**
+     * Get all permissions for this user
+     */
+    public function getPermissions()
+    {
+        if ($this->isSuperAdmin()) {
+            return Permission::all();
+        }
+
+        if (!$this->userGroup) {
+            return collect();
+        }
+
+        return $this->userGroup->permissions;
     }
 }

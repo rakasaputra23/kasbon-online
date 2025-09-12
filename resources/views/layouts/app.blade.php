@@ -6,6 +6,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Kasbon Online System')</title>
     
+    <!-- Favicon - Menggunakan logo INKA -->
+    <link rel="icon" type="image/png" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
+    
+    <!-- Multiple sizes untuk compatibility -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
+    
+    <!-- Fallback jika logo tidak bisa dimuat -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%233182CE'/><text x='16' y='20' text-anchor='middle' fill='white' font-family='Arial' font-size='14' font-weight='bold'>I</text></svg>"
+          onerror="this.href='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'><circle cx=\'16\' cy=\'16\' r=\'16\' fill=\'%233182CE\'/><text x=\'16\' y=\'20\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'14\' font-weight=\'bold\'>I</text></svg>'"
+    >
+    
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     
@@ -245,6 +259,96 @@
                     },
                     emptyTable: "Tidak ada data yang tersedia"
                 }
+            });
+        });
+    </script>
+    
+    <!-- Global Functions untuk seluruh aplikasi -->
+    <script>
+        // Global functions untuk menghindari konflik JavaScript
+        function showSystemInfo() {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'System Information',
+                    html: `
+                        <div style="text-align: left; font-size: 14px;">
+                            <table style="width: 100%; border-spacing: 8px;">
+                                <tr><td><strong>Application:</strong></td><td>Kasbon Online System</td></tr>
+                                <tr><td><strong>Laravel:</strong></td><td>{{ app()->version() }}</td></tr>
+                                <tr><td><strong>PHP:</strong></td><td>{{ phpversion() }}</td></tr>
+                                <tr><td><strong>Environment:</strong></td><td>{{ config('app.env') }}</td></tr>
+                                @if(Auth::check())
+                                <tr><td><strong>User:</strong></td><td>{{ Auth::user()->nama ?? 'Unknown' }}</td></tr>
+                                @if(Auth::user()->userGroup)
+                                <tr><td><strong>Role:</strong></td><td>{{ Auth::user()->userGroup->name ?? 'No Group' }}</td></tr>
+                                @endif
+                                @endif
+                                <tr><td><strong>Login Time:</strong></td><td>${new Date().toLocaleString('id-ID')}</td></tr>
+                            </table>
+                        </div>
+                    `,
+                    icon: 'info',
+                    confirmButtonText: 'Close',
+                    width: 450,
+                    customClass: {
+                        popup: 'rounded-3'
+                    }
+                });
+            } else {
+                alert('System Information:\\n\\nApplication: Kasbon Online System');
+            }
+        }
+
+        function showComingSoon(featureName) {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Coming Soon',
+                    html: `
+                        <div style="text-align: center;">
+                            <i class="fas fa-tools fa-3x text-primary mb-3"></i>
+                            <p class="mb-2"><strong>${featureName}</strong> sedang dalam tahap pengembangan.</p>
+                            <p class="text-muted">Fitur ini akan segera tersedia!</p>
+                        </div>
+                    `,
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    width: 400,
+                    customClass: {
+                        popup: 'rounded-3'
+                    }
+                });
+            } else {
+                alert(`${featureName} - Coming Soon!\\n\\nFitur ini sedang dalam tahap pengembangan.`);
+            }
+        }
+
+        // Function untuk update waktu di dashboard - DIPERBAIKI
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const element = document.getElementById('current-time');
+            if (element) {
+                element.textContent = timeString;
+            }
+        }
+
+        // Initialize time update jika ada element current-time - DIPERBAIKI
+        $(document).ready(function() {
+            // Pastikan interval tidak mengganggu favicon
+            if (document.getElementById('current-time')) {
+                updateTime();
+                // Gunakan interval yang lebih lama untuk mengurangi beban
+                setInterval(updateTime, 1000);
+            }
+            
+            // Pastikan semua resource sudah loaded
+            $(window).on('load', function() {
+                // Semua resource termasuk gambar sudah selesai dimuat
+                console.log('All resources loaded');
             });
         });
     </script>

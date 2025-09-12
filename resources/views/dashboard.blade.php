@@ -4,218 +4,179 @@
 @section('page_title', 'Dashboard')
 
 @section('content')
-<!-- Content Row - Statistics -->
-<div class="row">
-    <!-- Total Users Card -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>{{ $totalUsers }}</h3>
-                <p>Total Users</p>
+<!-- Welcome Banner -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm dashboard-welcome">
+            <div class="card-body text-white p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="mb-2 font-weight-bold">Selamat Datang, {{ $user->nama }}</h3>
+                        <p class="mb-0 opacity-80">{{ $user->posisi }} • {{ $user->userGroup ? $user->userGroup->name : 'No Group' }}</p>
+                    </div>
+                    <div class="col-md-4 text-md-right">
+                        <div class="opacity-90">
+                            <div class="h4 mb-0" id="current-time"></div>
+                            <small class="opacity-70">{{ now()->format('l, d F Y') }}</small>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="icon">
-                <i class="fas fa-users"></i>
-            </div>
-            <a href="{{ route('user') }}" class="small-box-footer">
-                More info <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-    
-    <!-- Total User Groups Card -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>{{ $totalUserGroups }}</h3>
-                <p>User Groups</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user-tag"></i>
-            </div>
-            <a href="{{ route('user.group') }}" class="small-box-footer">
-                More info <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-    
-    <!-- Active Users Card -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>{{ $activeUsers }}</h3>
-                <p>Active Users</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user-check"></i>
-            </div>
-            <a href="#" class="small-box-footer">
-                More info <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
-    
-    <!-- System Status Card -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3><i class="fas fa-server"></i></h3>
-                <p>System Status: <span class="badge badge-success">Online</span></p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-server"></i>
-            </div>
-            <a href="#" class="small-box-footer" onclick="showSystemInfo()">
-                More info <i class="fas fa-arrow-circle-right"></i>
-            </a>
         </div>
     </div>
 </div>
 
-<!-- Content Row -->
-<div class="row">
-    <!-- Welcome Card -->
-    <div class="col-md-6">
-        <div class="card card-widget widget-user">
-            <div class="widget-user-header bg-info">
-                <h3 class="widget-user-username">{{ $user->nama }}</h3>
-                <h5 class="widget-user-desc">{{ $user->posisi }}</h5>
-                <div class="widget-user-image">
-                    <img class="img-circle elevation-2" src="{{ asset('dist/img/user2-160x160.jpg') }}" alt="User Avatar">
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-sm-6 border-right">
-                        <div class="description-block">
-                            <h5 class="description-header">{{ $user->nip }}</h5>
-                            <span class="description-text">NIP</span>
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card border-0 shadow-sm h-100 stat-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="stat-icon stat-primary">
+                            <i class="fas fa-money-bill-wave fa-2x"></i>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="description-block">
-                            <h5 class="description-header">
-                                <span class="badge badge-primary">
-                                    {{ $user->userGroup ? $user->userGroup->name : 'No Group' }}
-                                </span>
-                            </h5>
-                            <span class="description-text">GROUP</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <p><strong>Email:</strong> {{ $user->email }}</p>
-                        <div class="text-center">
-                            <a href="{{ route('profile.edit') }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i> Edit Profile
-                            </a>
-                        </div>
+                    <div class="col">
+                        <h6 class="text-muted mb-1 stat-label">Total Kasbon</h6>
+                        <h2 class="mb-0 font-weight-bold text-dark">156</h2>
+                        <small class="text-success">
+                            <i class="fas fa-arrow-up"></i> +12% dari bulan lalu
+                        </small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Recent Users -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-users mr-1"></i>
-                    Recent Users
-                </h3>
-                <div class="card-tools">
-                    <a href="{{ route('user') }}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-arrow-right"></i> View All
-                    </a>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card border-0 shadow-sm h-100 stat-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="stat-icon stat-warning">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h6 class="text-muted mb-1 stat-label">Pending</h6>
+                        <h2 class="mb-0 font-weight-bold text-dark">5</h2>
+                        <small class="text-info">
+                            <i class="fas fa-hourglass-half"></i> Menunggu persetujuan
+                        </small>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card border-0 shadow-sm h-100 stat-card">
             <div class="card-body">
-                @if($recentUsers->count() > 0)
-                    <ul class="users-list clearfix">
-                        @foreach($recentUsers->take(8) as $recentUser)
-                        <li>
-                            <img src="{{ asset('dist/img/user2-160x160.jpg') }}" alt="User Image">
-                            <a class="users-list-name" href="#">{{ $recentUser->nama }}</a>
-                            <span class="users-list-date">{{ $recentUser->posisi }}</span>
-                        </li>
-                        @endforeach
-                    </ul>
-                @else
-                    <div class="text-center">
-                        <i class="fas fa-users fa-3x text-gray mb-3"></i>
-                        <p class="text-muted">Belum ada user yang terdaftar.</p>
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="stat-icon stat-success">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
                     </div>
-                @endif
+                    <div class="col">
+                        <h6 class="text-muted mb-1 stat-label">Approved</h6>
+                        <h2 class="mb-0 font-weight-bold text-dark">142</h2>
+                        <small class="text-success">
+                            <i class="fas fa-check"></i> Sudah disetujui
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card border-0 shadow-sm h-100 stat-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="stat-icon stat-info">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h6 class="text-muted mb-1 stat-label">Total Users</h6>
+                        <h2 class="mb-0 font-weight-bold text-dark">{{ $totalUsers ?? 5 }}</h2>
+                        <small class="text-muted">
+                            <i class="fas fa-user-check"></i> {{ $activeUsers ?? 3 }} aktif
+                        </small>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Quick Actions -->
-<div class="row">
+<div class="row mb-4">
     <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-bolt mr-1"></i>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom-0">
+                <h5 class="mb-0 section-title">
+                    <i class="fas fa-bolt text-primary mr-2"></i>
                     Quick Actions
-                </h3>
+                </h5>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-primary"><i class="fas fa-users"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">Manage Users</span>
-                                <span class="info-box-number">
-                                    <a href="{{ route('user') }}" class="btn btn-primary btn-sm">
-                                        Go to Users
-                                    </a>
-                                </span>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="action-item">
+                            <div class="action-content">
+                                <div class="action-icon action-primary">
+                                    <i class="fas fa-plus fa-lg"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h6 class="mb-1">Create Kasbon</h6>
+                                    <small class="text-muted">Buat pengajuan kasbon baru</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-success"><i class="fas fa-user-tag"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">User Groups</span>
-                                <span class="info-box-number">
-                                    <a href="{{ route('user.group') }}" class="btn btn-success btn-sm">
-                                        Go to Groups
-                                    </a>
-                                </span>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="action-item">
+                            <div class="action-content">
+                                <div class="action-icon action-warning">
+                                    <i class="fas fa-clock fa-lg"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h6 class="mb-1">Pending Approval</h6>
+                                    <small class="text-muted">Lihat kasbon yang menunggu</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-info"><i class="fas fa-user-cog"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">My Profile</span>
-                                <span class="info-box-number">
-                                    <a href="{{ route('profile') }}" class="btn btn-info btn-sm">
-                                        View Profile
-                                    </a>
-                                </span>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="action-item">
+                            <div class="action-content">
+                                <div class="action-icon action-success">
+                                    <i class="fas fa-chart-bar fa-lg"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h6 class="mb-1">Monthly Report</h6>
+                                    <small class="text-muted">Laporan kasbon bulanan</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-warning"><i class="fas fa-info-circle"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">System Info</span>
-                                <span class="info-box-number">
-                                    <button class="btn btn-warning btn-sm" onclick="showSystemInfo()">
-                                        View Info
-                                    </button>
-                                </span>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="action-item">
+                            <div class="action-content">
+                                <div class="action-icon action-info">
+                                    <i class="fas fa-history fa-lg"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h6 class="mb-1">History</h6>
+                                    <small class="text-muted">Riwayat semua kasbon</small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -225,63 +186,189 @@
     </div>
 </div>
 
-<!-- Time Display Card -->
+<!-- Recent Activity -->
 <div class="row">
     <div class="col-12">
-        <div class="card card-primary card-outline">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-clock mr-1"></i>
-                    Current Time
-                </h3>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 section-title">
+                        <i class="fas fa-history text-primary mr-2"></i>
+                        Recent Activity
+                    </h5>
+                    <button class="btn btn-outline-primary btn-sm">
+                        View All
+                    </button>
+                </div>
             </div>
             <div class="card-body">
-                <div class="text-center">
-                    <h4 id="current-time" class="text-primary"></h4>
+                <div class="activity-placeholder">
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-clock fa-2x mb-2 text-secondary"></i>
+                        <p class="mb-0 font-weight-medium">No recent activity</p>
+                        <small class="text-muted">Data aktivitas akan muncul di sini</small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
 
-@push('scripts')
+<style>
+/* Dashboard Styles - Clean & Compatible */
+.dashboard-welcome {
+    background: linear-gradient(135deg, #2c5282 0%, #3182ce 100%);
+    border-radius: 15px;
+}
+
+.stat-card {
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-primary {
+    background-color: rgba(49, 130, 206, 0.1);
+    color: #3182ce;
+}
+
+.stat-warning {
+    background-color: rgba(214, 158, 46, 0.1);
+    color: #d69e2e;
+}
+
+.stat-success {
+    background-color: rgba(56, 161, 105, 0.1);
+    color: #38a169;
+}
+
+.stat-info {
+    background-color: rgba(49, 130, 206, 0.1);
+    color: #3182ce;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.action-item {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    height: 100%;
+}
+
+.action-item:hover {
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-color: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.action-content {
+    display: flex;
+    align-items: center;
+}
+
+.action-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.action-primary {
+    background-color: rgba(49, 130, 206, 0.1);
+    color: #3182ce;
+}
+
+.action-warning {
+    background-color: rgba(214, 158, 46, 0.1);
+    color: #d69e2e;
+}
+
+.action-success {
+    background-color: rgba(56, 161, 105, 0.1);
+    color: #38a169;
+}
+
+.action-info {
+    background-color: rgba(49, 130, 206, 0.1);
+    color: #3182ce;
+}
+
+.action-text h6 {
+    color: #2d3748;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.activity-placeholder {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-title {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.opacity-80 { opacity: 0.8; }
+.opacity-90 { opacity: 0.9; }
+.opacity-70 { opacity: 0.7; }
+
+@media (max-width: 768px) {
+    .stat-card:hover,
+    .action-item:hover {
+        transform: none;
+    }
+}
+</style>
+
 <script>
-function updateTime() {
-    const now = new Date();
-    const timeString = now.toLocaleString('id-ID', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-    document.getElementById('current-time').textContent = timeString;
-}
-
-// Update time every second
-setInterval(updateTime, 1000);
-updateTime(); // Initial call
-
-function showSystemInfo() {
-    Swal.fire({
-        title: 'System Information',
-        html: `
-            <div class="text-left">
-                <p><strong>Application:</strong> Kasbon Online System</p>
-                <p><strong>Version:</strong> 1.0.0</p>
-                <p><strong>Framework:</strong> Laravel 10</p>
-                <p><strong>Database:</strong> MySQL</p>
-                <p><strong>Current User:</strong> {{ $user->nama }}</p>
-                <p><strong>User Role:</strong> {{ $user->userGroup ? $user->userGroup->name : 'No Group' }}</p>
-                <p><strong>Login Time:</strong> ${new Date().toLocaleString('id-ID')}</p>
-            </div>
-        `,
-        icon: 'info',
-        confirmButtonText: 'Close'
-    });
-}
+document.addEventListener('DOMContentLoaded', function() {
+    // Time update function
+    function updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit', 
+            second: '2-digit'
+        });
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+    
+    // Initialize and update time
+    updateTime();
+    setInterval(updateTime, 1000);
+});
 </script>
-@endpush
+@endsection
