@@ -26,7 +26,7 @@
         </li>
         @endif
 
-        <!-- Kasbon Management (DIPERBAIKI: Tambahkan data-widget="treeview") -->
+        <!-- Kasbon Management -->
         <li class="nav-item" data-widget="treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i>
@@ -37,37 +37,83 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link" onclick="showComingSoon('View Kasbon')">
+              <a href="#" class="nav-link" onclick="showComingSoon('Create SPPD')">
                 <i class="far fa-circle nav-icon"></i>
-                <p>View Kasbon</p>
+                <p>Create SPPD</p>
               </a>
             </li>
             
             <li class="nav-item">
-              <a href="#" class="nav-link" onclick="showComingSoon('Create Kasbon')">
+              <a href="#" class="nav-link" onclick="showComingSoon('View SPPD')">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Create Kasbon</p>
+                <p>View SPPD</p>
               </a>
             </li>
             
             <li class="nav-item">
-              <a href="#" class="nav-link" onclick="showComingSoon('Pending Approval')">
+              <a href="#" class="nav-link" onclick="showComingSoon('Create PPK')">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Pending Approval</p>
-                <span class="badge badge-warning right">5</span>
+                <p>Create PPK</p>
               </a>
             </li>
             
             <li class="nav-item">
-              <a href="#" class="nav-link" onclick="showComingSoon('History')">
+              <a href="#" class="nav-link" onclick="showComingSoon('View PPK')">
                 <i class="far fa-circle nav-icon"></i>
-                <p>History</p>
+                <p>View PPK</p>
               </a>
             </li>
           </ul>
         </li>
 
-        <!-- Reports (DIPERBAIKI: Tambahkan data-widget="treeview") -->
+        <!-- Data Master -->
+        <li class="nav-item" data-widget="treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-database"></i>
+            <p>
+              Data Master
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link" onclick="showComingSoon('Divisi')">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Divisi</p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="#" class="nav-link" onclick="showComingSoon('Departemen')">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Departemen</p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="#" class="nav-link" onclick="showComingSoon('Bagian')">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Bagian</p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="#" class="nav-link" onclick="showComingSoon('Unit')">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Unit</p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="#" class="nav-link" onclick="showComingSoon('Staff')">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Staff</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Reports -->
         <li class="nav-item" data-widget="treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
@@ -78,29 +124,22 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link" onclick="showComingSoon('Monthly Report')">
+              <a href="#" class="nav-link" onclick="showComingSoon('SPPD Report')">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Monthly Report</p>
+                <p>SPPD</p>
               </a>
             </li>
             
             <li class="nav-item">
-              <a href="#" class="nav-link" onclick="showComingSoon('Yearly Report')">
+              <a href="#" class="nav-link" onclick="showComingSoon('PPK Report')">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Yearly Report</p>
-              </a>
-            </li>
-            
-            <li class="nav-item">
-              <a href="#" class="nav-link" onclick="showComingSoon('Employee Report')">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Employee Report</p>
+                <p>PPK</p>
               </a>
             </li>
           </ul>
         </li>
 
-        <!-- User Management Section (DIPERBAIKI: Tambahkan data-widget="treeview") -->
+        <!-- User Management Section -->
         @php
           $hasUserMgmtAccess = Auth::user()->canAccessRoute('user') || 
                               Auth::user()->canAccessRoute('user.group') || 
@@ -151,7 +190,7 @@
         </li>
         @endif
 
-        <!-- Settings Section (DIPERBAIKI: Tambahkan data-widget="treeview") -->
+        <!-- Settings Section -->
         <li class="nav-header">SETTINGS</li>
         <li class="nav-item" data-widget="treeview">
           <a href="#" class="nav-link">
