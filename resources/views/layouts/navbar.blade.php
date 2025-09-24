@@ -1,13 +1,13 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #ffffff;">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light kai-navbar">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-        <i class="fas fa-bars text-dark"></i>
+        <i class="fas fa-bars"></i>
       </a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="{{ route('dashboard') }}" class="nav-link text-dark">
+      <a href="{{ route('dashboard') }}" class="nav-link">
         <i class="fas fa-home mr-1"></i>Home
       </a>
     </li>
@@ -33,7 +33,7 @@
 
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link text-dark" data-toggle="dropdown" href="#">
+      <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="far fa-bell"></i>
         <span class="badge badge-warning navbar-badge">{{ count($notifications) }}</span>
       </a>
@@ -55,7 +55,7 @@
 
     <!-- Messages Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link text-dark" data-toggle="dropdown" href="#">
+      <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="far fa-comments"></i>
         <span class="badge badge-danger navbar-badge">{{ count($messages) }}</span>
       </a>
@@ -97,52 +97,98 @@
     @if($user)
       <!-- User Dropdown -->
       <li class="nav-item dropdown user-menu">
-        <a href="#" class="nav-link dropdown-toggle text-dark" data-toggle="dropdown">
-          <i class="fas fa-user-circle user-icon"></i>
-          <span class="d-none d-md-inline">{{ $user->nama }}</span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <!-- User icon header -->
-          <li class="user-header bg-white">
-            <i class="fas fa-user-circle user-icon-large text-primary"></i>
-            <p class="text-dark">
-              {{ $user->nama }}
-              @if($user->posisi)
-                <small class="text-muted">{{ $user->posisi }}</small>
-              @endif
-              @if($user->userGroup)
-                <br><small class="text-muted">{{ $user->userGroup->name }}</small>
-              @endif
-            </p>
-          </li>
-
-          <!-- Menu Footer-->
-          <li class="user-footer">
-            <div class="row">
-              <div class="col-6">
-                @if(Route::has('profile'))
-                <a href="{{ route('profile') }}" class="btn btn-default btn-flat btn-block">
-                  <i class="fas fa-user mr-1"></i> Profile
-                </a>
-                @endif
-              </div>
-              <div class="col-6">
-                @if(Route::has('profile.edit'))
-                <a href="{{ route('profile.edit') }}" class="btn btn-default btn-flat btn-block">
-                  <i class="fas fa-edit mr-1"></i> Edit Profile
-                </a>
+        <a href="#" class="nav-link dropdown-toggle user-nav-link" data-toggle="dropdown">
+          <div class="user-nav-content">
+            <div class="user-avatar">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details d-none d-md-flex">
+              <div class="user-text">
+                <span class="user-name">{{ $user->nama }}</span>
+                @if($user->posisi)
+                  <span class="user-role">{{ $user->posisi }}</span>
                 @endif
               </div>
             </div>
-            <div class="row mt-2">
-              <div class="col-12">
-                <form action="{{ route('logout') }}" method="POST" class="d-inline w-100">
-                  @csrf
-                  <a href="#" class="btn btn-danger btn-flat btn-block" onclick="confirmLogout(this)">
-                    <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                  </a>
-                </form>
+            <div class="dropdown-arrow">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right user-dropdown">
+          <!-- User Header -->
+          <li class="user-header">
+            <div class="user-profile-section">
+              <div class="user-avatar-large">
+                <i class="fas fa-user-circle"></i>
               </div>
+              <div class="user-info">
+                <h4 class="user-full-name">{{ $user->nama }}</h4>
+                @if($user->posisi)
+                  <p class="user-position">{{ $user->posisi }}</p>
+                @endif
+                @if($user->userGroup)
+                  <p class="user-group">{{ $user->userGroup->name }}</p>
+                @endif
+              </div>
+            </div>
+          </li>
+
+          <!-- Menu Items -->
+          <li class="user-menu-section">
+            <div class="user-menu-items">
+              @if(Route::has('profile'))
+              <a href="{{ route('profile') }}" class="user-menu-item">
+                <div class="menu-item-content">
+                  <div class="menu-icon">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="menu-text">
+                    <span class="menu-title">Profile</span>
+                    <span class="menu-subtitle">View your profile</span>
+                  </div>
+                </div>
+              </a>
+              @endif
+              
+              @if(Route::has('profile.edit'))
+              <a href="{{ route('profile.edit') }}" class="user-menu-item">
+                <div class="menu-item-content">
+                  <div class="menu-icon">
+                    <i class="fas fa-edit"></i>
+                  </div>
+                  <div class="menu-text">
+                    <span class="menu-title">Edit Profile</span>
+                    <span class="menu-subtitle">Update your information</span>
+                  </div>
+                </div>
+              </a>
+              @endif
+              
+              <a href="#" class="user-menu-item" onclick="showComingSoon('Settings')">
+                <div class="menu-item-content">
+                  <div class="menu-icon">
+                    <i class="fas fa-cog"></i>
+                  </div>
+                  <div class="menu-text">
+                    <span class="menu-title">Settings</span>
+                    <span class="menu-subtitle">Configure preferences</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </li>
+
+          <!-- Menu Footer -->
+          <li class="user-footer">
+            <div class="logout-section">
+              <form action="{{ route('logout') }}" method="POST" class="d-inline w-100">
+                @csrf
+                <button type="button" class="btn btn-danger btn-logout" onclick="confirmLogout(this)">
+                  <i class="fas fa-sign-out-alt mr-2"></i>
+                  <span>Logout</span>
+                </button>
+              </form>
             </div>
           </li>
         </ul>
@@ -151,49 +197,328 @@
   </ul>
 </nav>
 
-<!-- Enhanced CSS dengan tema putih bersih -->
 <style>
-/* Navbar styling dengan warna putih bersih */
-.main-header.navbar-white {
-    background-color: #ffffff !important;
-    border-bottom: 1px solid #eaeaea;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+/* Override dengan !important hanya untuk mencegah konflik tanpa merusak style existing */
+
+/* Navbar utama - hanya override yang diperlukan */
+.main-header.navbar.kai-navbar {
+    background: var(--kai-white) !important;
+    border-bottom: 1px solid var(--kai-gray-200) !important;
+    box-shadow: 0 1px 3px rgba(30, 64, 175, 0.1), 0 1px 2px rgba(30, 64, 175, 0.06) !important;
 }
 
-/* Navbar link styling */
-.navbar-white .navbar-nav .nav-link {
-    color: rgba(0, 0, 0, 0.8) !important;
+/* Navbar links - dengan spesifisitas untuk override AdminLTE */
+.main-header.navbar.kai-navbar .navbar-nav .nav-link {
+    color: var(--kai-gray-700) !important;
+    transition: all 0.3s ease !important;
+    border-radius: 8px !important;
+    margin: 0 4px !important;
+    font-weight: 500 !important;
+}
+
+.main-header.navbar.kai-navbar .navbar-nav .nav-link:hover {
+    color: var(--kai-primary) !important;
+    background: rgba(30, 64, 175, 0.05) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Pushmenu button */
+.main-header.navbar.kai-navbar .nav-link[data-widget="pushmenu"] {
+    background: rgba(30, 64, 175, 0.05) !important;
+    color: var(--kai-primary) !important;
+}
+
+.main-header.navbar.kai-navbar .nav-link[data-widget="pushmenu"]:hover {
+    background: rgba(30, 64, 175, 0.1) !important;
+    color: var(--kai-primary-dark) !important;
+}
+
+/* User nav link - dengan prioritas tinggi */
+.main-header.navbar.kai-navbar .user-menu .user-nav-link {
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.03), rgba(59, 130, 246, 0.03)) !important;
+    border: 1px solid rgba(30, 64, 175, 0.1) !important;
+    border-radius: 50px !important;
+    padding: 8px 16px !important;
+    margin-right: 8px !important;
+    min-width: 200px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.main-header.navbar.kai-navbar .user-menu .user-nav-link:hover {
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.08), rgba(59, 130, 246, 0.08)) !important;
+    border-color: rgba(30, 64, 175, 0.2) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.15) !important;
+}
+
+/* User nav content */
+.main-header.navbar.kai-navbar .user-nav-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+}
+
+.main-header.navbar.kai-navbar .user-avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.main-header.navbar.kai-navbar .user-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.main-header.navbar.kai-navbar .user-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.main-header.navbar.kai-navbar .user-name {
+    color: var(--kai-gray-800) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.main-header.navbar.kai-navbar .user-role {
+    color: var(--kai-gray-600) !important;
+    font-weight: 400 !important;
+    font-size: 0.75rem;
+    line-height: 1;
+    margin-top: 1px;
+}
+
+.main-header.navbar.kai-navbar .dropdown-arrow {
+    color: var(--kai-gray-500);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.main-header.navbar.kai-navbar .user-nav-link:hover .dropdown-arrow {
+    color: var(--kai-primary);
+    transform: rotate(180deg);
+}
+
+/* User Dropdown - dengan spesifisitas tinggi untuk mencegah konflik */
+.main-header.navbar.kai-navbar .user-menu .user-dropdown {
+    border: none !important;
+    padding: 0 !important;
+    margin-top: 12px !important;
+    width: 320px !important;
+    box-shadow: 0 10px 40px rgba(30, 64, 175, 0.15) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    background: var(--kai-white) !important;
+}
+
+/* User header */
+.main-header.navbar.kai-navbar .user-header {
+    background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light)) !important;
+    padding: 24px 20px !important;
+    text-align: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border: none !important;
+    list-style: none !important;
+}
+
+.main-header.navbar.kai-navbar .user-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.main-header.navbar.kai-navbar .user-profile-section {
+    position: relative;
+    z-index: 2;
+}
+
+.main-header.navbar.kai-navbar .user-avatar-large {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.main-header.navbar.kai-navbar .user-avatar-large i {
+    font-size: 2rem;
+    color: white;
+}
+
+.main-header.navbar.kai-navbar .user-info {
+    color: white;
+}
+
+.main-header.navbar.kai-navbar .user-full-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.main-header.navbar.kai-navbar .user-position,
+.main-header.navbar.kai-navbar .user-group {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 2px 0;
+    font-weight: 400;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu Items */
+.main-header.navbar.kai-navbar .user-menu-section {
+    padding: 16px 0;
+    background: var(--kai-white);
+    list-style: none;
+}
+
+.main-header.navbar.kai-navbar .user-menu-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-header.navbar.kai-navbar .user-menu-item {
+    display: block;
+    padding: 0;
+    color: var(--kai-gray-700);
+    text-decoration: none;
     transition: all 0.3s ease;
-    border-radius: 6px;
-    margin: 0 2px;
-    padding: 8px 12px !important;
+    border: none;
+    background: none;
 }
 
-.navbar-white .navbar-nav .nav-link:hover {
-    color: #000000 !important;
-    background-color: rgba(0, 0, 0, 0.05);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.main-header.navbar.kai-navbar .user-menu-item:hover {
+    color: var(--kai-primary);
+    text-decoration: none;
+    background: rgba(30, 64, 175, 0.04);
 }
 
-.navbar-white .navbar-nav .nav-link:focus {
-    color: #000000 !important;
-    background-color: rgba(0, 0, 0, 0.08);
+.main-header.navbar.kai-navbar .menu-item-content {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    gap: 16px;
 }
 
-/* Pushmenu button special styling */
-.nav-link[data-widget="pushmenu"] {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
+.main-header.navbar.kai-navbar .menu-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--kai-gray-100), var(--kai-gray-50));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--kai-gray-600);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
-.nav-link[data-widget="pushmenu"]:hover {
-    background-color: rgba(0, 0, 0, 0.1) !important;
-    transform: translateY(-1px);
+.main-header.navbar.kai-navbar .user-menu-item:hover .menu-icon {
+    background: linear-gradient(135deg, var(--kai-primary-light), var(--kai-primary));
+    color: white;
+    transform: scale(1.05);
 }
 
-/* Badge styling dengan efek subtle */
-.navbar-badge {
+.main-header.navbar.kai-navbar .menu-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.main-header.navbar.kai-navbar .menu-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--kai-gray-800);
+    line-height: 1.2;
+}
+
+.main-header.navbar.kai-navbar .menu-subtitle {
+    font-size: 0.8rem;
+    color: var(--kai-gray-500);
+    margin-top: 2px;
+    line-height: 1.2;
+}
+
+.main-header.navbar.kai-navbar .user-menu-item:hover .menu-title {
+    color: var(--kai-primary);
+}
+
+.main-header.navbar.kai-navbar .user-menu-item:hover .menu-subtitle {
+    color: var(--kai-primary-light);
+}
+
+/* Logout Section */
+.main-header.navbar.kai-navbar .user-footer {
+    background: var(--kai-gray-50);
+    padding: 16px 20px;
+    border-top: 1px solid var(--kai-gray-100);
+    list-style: none;
+}
+
+.main-header.navbar.kai-navbar .logout-section {
+    display: flex;
+    justify-content: center;
+}
+
+.main-header.navbar.kai-navbar .btn-logout {
+    background: linear-gradient(135deg, var(--kai-danger), #f56565) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-width: 120px !important;
+    justify-content: center !important;
+}
+
+.main-header.navbar.kai-navbar .btn-logout:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4) !important;
+    background: linear-gradient(135deg, #dc2626, var(--kai-danger)) !important;
+    color: white !important;
+}
+
+/* Badge styling */
+.main-header.navbar.kai-navbar .navbar-badge {
     font-size: 0.7rem;
     font-weight: 700;
     padding: 0.25rem 0.4rem;
@@ -201,296 +526,162 @@
     right: -0.375rem;
     top: -0.375rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 2px solid #ffffff;
+    border: 2px solid var(--kai-white);
+    animation: pulse 3s ease-in-out infinite;
 }
 
-.badge-warning {
-    background: linear-gradient(135deg, #f6ad55, #ed8936);
-    color: #ffffff;
+.main-header.navbar.kai-navbar .badge-warning {
+    background: linear-gradient(135deg, var(--kai-warning), var(--kai-secondary-light)) !important;
+    color: var(--kai-white) !important;
 }
 
-.badge-danger {
-    background: linear-gradient(135deg, #fc8181, #e53e3e);
-    color: #ffffff;
+.main-header.navbar.kai-navbar .badge-danger {
+    background: linear-gradient(135deg, var(--kai-danger), #f56565) !important;
+    color: var(--kai-white) !important;
 }
 
-/* Dropdown menu enhancements */
-.dropdown-menu {
-    border: 1px solid #eaeaea;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+/* Dropdown menus */
+.main-header.navbar.kai-navbar .dropdown-menu {
+    border: 1px solid var(--kai-gray-200);
+    box-shadow: 0 4px 6px rgba(30, 64, 175, 0.15), 0 2px 4px rgba(30, 64, 175, 0.06);
+    border-radius: 12px;
     overflow: hidden;
+    background: var(--kai-white);
 }
 
-.dropdown-menu-lg {
+.main-header.navbar.kai-navbar .dropdown-menu-lg {
     min-width: 280px;
 }
 
-.dropdown-header {
+.main-header.navbar.kai-navbar .dropdown-header {
     font-size: 0.875rem;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    border-bottom: 1px solid #dee2e6;
-    color: #495057;
+    background: linear-gradient(135deg, var(--kai-gray-50), var(--kai-gray-100));
+    border-bottom: 1px solid var(--kai-gray-200);
+    color: var(--kai-gray-700);
 }
 
-.dropdown-footer {
+.main-header.navbar.kai-navbar .dropdown-footer {
     font-size: 0.875rem;
     font-weight: 600;
     text-align: center;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    border-top: 1px solid #dee2e6;
+    background: linear-gradient(135deg, var(--kai-gray-50), var(--kai-gray-100));
+    border-top: 1px solid var(--kai-gray-200);
     transition: all 0.3s ease;
+    color: var(--kai-primary);
 }
 
-.dropdown-footer:hover {
-    background: linear-gradient(135deg, #e9ecef, #dee2e6);
-    color: #495057;
+.main-header.navbar.kai-navbar .dropdown-footer:hover {
+    background: linear-gradient(135deg, var(--kai-primary-light), var(--kai-primary));
+    color: var(--kai-white);
     text-decoration: none;
 }
 
-.dropdown-item {
+.main-header.navbar.kai-navbar .dropdown-item {
     transition: all 0.2s ease;
-    border-radius: 0;
+    color: var(--kai-gray-700);
 }
 
-.dropdown-item:hover {
-    background-color: rgba(0, 0, 0, 0.03);
+.main-header.navbar.kai-navbar .dropdown-item:hover {
+    background: rgba(30, 64, 175, 0.05);
+    color: var(--kai-primary);
     transform: translateX(2px);
+    text-decoration: none;
 }
 
-/* Message media styling enhancements */
-.media {
-    display: flex;
-    align-items: flex-start;
-    padding: 0.5rem 0;
-}
-
-.media-object {
-    margin-right: 1rem;
-}
-
-.media-body {
-    flex: 1;
-}
-
-.avatar-placeholder {
+/* Avatar placeholder */
+.main-header.navbar.kai-navbar .avatar-placeholder {
     width: 50px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
     border-radius: 50%;
     margin-right: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);
 }
 
-.avatar-placeholder i {
+.main-header.navbar.kai-navbar .avatar-placeholder i {
     font-size: 2rem;
-    color: white;
+    color: var(--kai-white);
 }
 
-.img-size-50 {
-    width: 50px;
-    height: 50px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* Media styling */
+.main-header.navbar.kai-navbar .media {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.5rem 0;
 }
 
-.img-circle {
-    border-radius: 50%;
+.main-header.navbar.kai-navbar .media-object {
+    margin-right: 1rem;
 }
 
-/* User menu dropdown styling dengan tema yang konsisten */
-.user-menu .dropdown-menu {
-    border-top: 0;
-    padding: 0;
-    margin-top: 0;
-    width: 280px;
+.main-header.navbar.kai-navbar .media-body {
+    flex: 1;
 }
 
-/* User icon styling dengan warna gelap untuk navbar putih */
-.user-icon {
-    font-size: 2.1rem;
-    color: rgba(0, 0, 0, 0.7);
-    margin-right: 0.5rem;
-}
-
-.user-icon-large {
-    font-size: 5rem;
-    color: #3182ce;
-    margin-bottom: 10px;
-}
-
-/* User header dengan warna putih */
-.user-header.bg-white {
-    background-color: #ffffff !important;
-    height: 175px;
-    padding: 30px 25px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid #eaeaea;
-}
-
-.user-header.bg-white::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" patternUnits="userSpaceOnUse" width="100" height="100"><circle cx="25" cy="25" r="1" fill="black" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="black" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
-}
-
-.user-header p {
-    z-index: 5;
-    color: #2d3748;
-    font-size: 17px;
-    margin-top: 10px;
-    position: relative;
-}
-
-.user-header small {
-    display: block;
-    font-size: 12px;
-    color: #718096;
-}
-
-/* User footer dengan styling yang lebih modern */
-.user-footer {
-    background-color: #f8f9fa;
-    padding: 15px;
-}
-
-.user-footer .btn-flat {
-    border-radius: 6px;
-    border-width: 1px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.user-footer .btn-default {
-    border-color: #d1d5db;
-    background-color: #ffffff;
-    color: #4b5563;
-}
-
-.user-footer .btn-default:hover {
-    background-color: #f3f4f6;
-    border-color: #9ca3af;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.user-footer .btn-danger:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-}
-
-/* Dropdown toggle styling */
-.user-menu .nav-link.dropdown-toggle::after {
-    border: none;
-    content: "\f0d7";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    margin-left: 6px;
-    transition: transform 0.3s ease;
-}
-
-.user-menu .nav-link.dropdown-toggle:hover::after {
-    transform: rotate(180deg);
-}
-
-/* Text colors untuk icons dengan kontras yang baik */
-.text-success { color: #28a745 !important; }
-.text-warning { color: #ffc107 !important; }
-.text-info { color: #17a2b8 !important; }
-.text-danger { color: #dc3545 !important; }
-
-/* Responsive adjustments */
-@media (max-width: 767px) {
-    .user-menu .dropdown-menu,
-    .dropdown-menu-lg {
-        width: 250px;
-        margin-left: -180px;
-    }
-    
-    .navbar-badge {
-        right: -0.25rem;
-        top: -0.25rem;
-    }
-    
-    .navbar-white .navbar-nav .nav-link {
-        padding: 6px 8px !important;
-    }
-}
-
-/* Enhanced animations */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.navbar-badge {
-    animation: pulse 3s ease-in-out infinite;
-}
-
-/* Subtle hover animations untuk dropdown items */
-.dropdown-item-title {
+.main-header.navbar.kai-navbar .dropdown-item-title {
     font-size: 0.875rem;
     font-weight: 600;
     margin: 0 0 0.25rem 0;
-    transition: color 0.2s ease;
+    color: var(--kai-gray-800);
 }
 
-.dropdown-item:hover .dropdown-item-title {
-    color: #3182ce;
-}
+/* Text colors */
+.main-header.navbar.kai-navbar .text-success { color: var(--kai-success) !important; }
+.main-header.navbar.kai-navbar .text-warning { color: var(--kai-warning) !important; }
+.main-header.navbar.kai-navbar .text-info { color: var(--kai-primary-light) !important; }
+.main-header.navbar.kai-navbar .text-danger { color: var(--kai-danger) !important; }
+.main-header.navbar.kai-navbar .text-muted { color: var(--kai-gray-600) !important; }
 
-/* Loading shimmer effect untuk avatar placeholder */
-@keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
+/* Responsive */
+@media (max-width: 767px) {
+    .main-header.navbar.kai-navbar .user-nav-link {
+        min-width: 50px !important;
+        padding: 8px 12px !important;
     }
-    100% {
-        background-position: 1000px 0;
+    
+    .main-header.navbar.kai-navbar .user-details {
+        display: none !important;
+    }
+    
+    .main-header.navbar.kai-navbar .user-dropdown {
+        width: 280px !important;
+        margin-left: -200px !important;
+    }
+    
+    .main-header.navbar.kai-navbar .dropdown-menu-lg {
+        min-width: 250px !important;
+        margin-left: -180px !important;
     }
 }
 
-.avatar-placeholder {
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
-    background-size: 1000px 100%;
-    animation: shimmer 2s infinite linear;
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 </style>
 
 <script>
-// Simple logout confirmation dengan tema yang konsisten
+// Logout confirmation
 function confirmLogout(element) {
     if (typeof Swal !== 'undefined') {
         Swal.fire({
-            title: 'Logout',
+            title: '<span style="color: var(--kai-primary);">Logout</span>',
             text: 'Are you sure you want to logout?',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            cancelButtonColor: '#6c757d',
+            confirmButtonColor: 'var(--kai-danger)',
+            cancelButtonColor: 'var(--kai-gray-600)',
             confirmButtonText: 'Yes, Logout',
             cancelButtonText: 'Cancel',
             customClass: {
                 popup: 'rounded-3'
-            },
-            buttonsStyling: true
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 element.closest('form').submit();
@@ -503,44 +694,26 @@ function confirmLogout(element) {
     }
 }
 
-// Mark notification as read dengan feedback visual
-function markNotificationAsRead(notificationId) {
-    console.log('Marking notification ' + notificationId + ' as read');
-    // Tambahkan efek visual saat notification dibaca
-    const badge = document.querySelector('.badge-warning');
-    if (badge) {
-        badge.style.transform = 'scale(0.8)';
-        setTimeout(() => {
-            badge.style.transform = 'scale(1)';
-        }, 150);
-    }
-}
-
-// Mark message as read dengan feedback visual
-function markMessageAsRead(messageId) {
-    console.log('Marking message ' + messageId + ' as read');
-    // Tambahkan efek visual saat message dibaca
-    const badge = document.querySelector('.badge-danger');
-    if (badge) {
-        badge.style.transform = 'scale(0.8)';
-        setTimeout(() => {
-            badge.style.transform = 'scale(1)';
-        }, 150);
-    }
-}
-
-// Initialize navbar interactions
+// Initialize dropdown functionality
 $(document).ready(function() {
-    // Smooth animations untuk dropdown
-    $('.dropdown-toggle').on('click', function() {
-        $(this).next('.dropdown-menu').fadeIn(200);
+    // Enhanced dropdown handling
+    $('.main-header.navbar.kai-navbar .dropdown-toggle').on('click', function(e) {
+        e.preventDefault();
+        const $dropdown = $(this).next('.dropdown-menu');
+        $('.main-header.navbar.kai-navbar .dropdown-menu').not($dropdown).removeClass('show');
+        $dropdown.toggleClass('show');
     });
-    
-    // Auto-hide dropdowns when clicking outside
+
+    // Close dropdowns when clicking outside
     $(document).on('click', function(e) {
-        if (!$(e.target).closest('.dropdown').length) {
-            $('.dropdown-menu').fadeOut(150);
+        if (!$(e.target).closest('.main-header.navbar.kai-navbar .dropdown').length) {
+            $('.main-header.navbar.kai-navbar .dropdown-menu').removeClass('show');
         }
+    });
+
+    // Prevent dropdown from closing when clicking inside
+    $('.main-header.navbar.kai-navbar .dropdown-menu').on('click', function(e) {
+        e.stopPropagation();
     });
 });
 </script>

@@ -15,8 +15,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
     
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Google Font: Inter untuk kesan modern seperti KAI Access -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,152 +36,275 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
     
-    <!-- Custom CSS dengan tema biru yang konsisten -->
+    <!-- Custom CSS dengan tema Access by KAI yang authentic -->
     <style>
-        /* Brand image dengan background yang konsisten */
-        .brand-image {
-            opacity: 1;
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            background: transparent;
-            margin-top: -3px;
-            box-shadow: none !important;
+        /* Override font family untuk seluruh aplikasi - menggunakan Inter seperti KAI Access */
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
-        /* Sidebar styling yang match dengan navbar */
-        .sidebar-dark-primary {
-            background-color: #2c5282;
+        /* Definisi warna Access by KAI yang authentic */
+        :root {
+            --kai-primary: #1E40AF;        /* Blue primary KAI */
+            --kai-primary-dark: #1E3A8A;   /* Blue darker */
+            --kai-primary-light: #3B82F6;  /* Blue lighter */
+            --kai-secondary: #F97316;      /* Orange accent KAI */
+            --kai-secondary-light: #FB923C;
+            --kai-success: #10B981;        /* Green */
+            --kai-warning: #F59E0B;        /* Amber */
+            --kai-danger: #EF4444;         /* Red */
+            --kai-light: #F8FAFC;          /* Light background */
+            --kai-white: #FFFFFF;
+            --kai-gray-50: #F9FAFB;
+            --kai-gray-100: #F3F4F6;
+            --kai-gray-200: #E5E7EB;
+            --kai-gray-300: #D1D5DB;
+            --kai-gray-500: #6B7280;
+            --kai-gray-600: #4B5563;
+            --kai-gray-700: #374151;
+            --kai-gray-800: #1F2937;
+            --kai-gray-900: #111827;
         }
         
-        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link {
-            transition: all 0.3s ease;
-            border-radius: 4px;
-            margin: 2px 4px;
-        }
-        
-        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(2px);
-        }
-        
-        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
-            background: linear-gradient(135deg, #3182ce, #4299e1) !important;
-            color: white !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-        
-        .sidebar-dark-primary .nav-sidebar > .nav-item.menu-open > .nav-link {
-            background-color: #3182ce;
-            color: #fff;
-        }
-        
-        .sidebar-dark-primary .nav-sidebar > .nav-item .nav-treeview > .nav-item > .nav-link.active {
-            background-color: #4299e1;
-            color: #fff;
-        }
-        
-        .sidebar-dark-primary .nav-sidebar > .nav-item .nav-treeview > .nav-item > .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-        
-        .sidebar-dark-primary .nav-header {
-            background-color: inherit;
-            color: rgba(255, 255, 255, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 8px;
-            padding-bottom: 8px;
-        }
-        
-        .sidebar-dark-primary .brand-link {
-            background-color: #2a4a6b;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background-color 0.3s ease;
-        }
-        
-        .sidebar-dark-primary .brand-link:hover {
-            background-color: #2d4f75;
-        }
-        
-        /* Content wrapper dengan background yang lembut */
+        /* Content wrapper dengan background putih bersih seperti KAI Access */
         .content-wrapper {
-            background: linear-gradient(135deg, #f4f6f9 0%, #f8fafc 100%);
+            background: var(--kai-gray-50);
             min-height: calc(100vh - 57px);
         }
         
-        /* Card styling yang modern */
+        /* Card styling yang modern dengan shadow biru KAI */
         .card {
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            border: none;
-            border-radius: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 1px 3px rgba(30, 64, 175, 0.1), 0 1px 2px rgba(30, 64, 175, 0.06);
+            border: 1px solid var(--kai-gray-200);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            background: var(--kai-white);
         }
         
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(30, 64, 175, 0.15), 0 2px 4px rgba(30, 64, 175, 0.06);
         }
         
-        /* Navbar nav links yang konsisten */
-        .navbar-nav .nav-link {
-            display: flex;
-            align-items: center;
+        .card-header {
+            background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: 600;
+            border-bottom: none;
         }
         
-        /* Badge styling yang konsisten */
+        /* Button styling dengan tema KAI Access yang authentic */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--kai-primary-dark), var(--kai-primary));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--kai-primary);
+            color: var(--kai-primary);
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--kai-primary);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        /* Badge styling dengan warna KAI yang authentic */
         .badge-warning {
-            background: linear-gradient(135deg, #f6ad55, #ed8936);
-            color: #ffffff;
+            background: var(--kai-secondary);
+            color: white;
+            font-weight: 600;
         }
         
-        /* Custom scrollbar untuk sidebar */
-        .main-sidebar::-webkit-scrollbar {
-            width: 6px;
+        .badge-primary {
+            background: var(--kai-primary);
+            color: white;
         }
         
-        .main-sidebar::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .main-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.3);
-            border-radius: 3px;
-        }
-        
-        .main-sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.5);
+        .badge-success {
+            background: var(--kai-success);
+            color: white;
         }
         
         /* Breadcrumb styling yang match */
         .breadcrumb-item a {
-            color: #2c5282;
+            color: var(--kai-primary);
             text-decoration: none;
+            font-weight: 500;
             transition: color 0.2s ease;
         }
         
         .breadcrumb-item a:hover {
-            color: #4299e1;
+            color: var(--kai-secondary);
         }
         
         .breadcrumb-item.active {
-            color: #6c757d;
+            color: var(--kai-gray-600);
+            font-weight: 600;
         }
         
         /* Footer styling */
         .main-footer {
-            background-color: #fff;
-            border-top: 1px solid #dee2e6;
-            color: #6c757d;
+            background: var(--kai-white);
+            border-top: 1px solid var(--kai-gray-200);
+            color: var(--kai-gray-600);
         }
         
         .main-footer a {
-            color: #2c5282;
+            color: var(--kai-primary);
             text-decoration: none;
+            font-weight: 600;
         }
         
         .main-footer a:hover {
-            color: #4299e1;
+            color: var(--kai-secondary);
+        }
+        
+        /* Info boxes dengan warna KAI yang authentic */
+        .info-box {
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(30, 64, 175, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid var(--kai-gray-200);
+        }
+        
+        .info-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(30, 64, 175, 0.15);
+        }
+        
+        .info-box-icon {
+            background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light)) !important;
+            color: white !important;
+        }
+        
+        /* DataTables styling */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: var(--kai-primary) !important;
+            border-color: var(--kai-primary) !important;
+            color: white !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: var(--kai-primary-light) !important;
+            border-color: var(--kai-primary-light) !important;
+            color: white !important;
+        }
+        
+        /* Select2 custom styling */
+        .select2-container--bootstrap4 .select2-selection--single {
+            border-radius: 6px;
+            border-color: var(--kai-gray-300);
+        }
+        
+        .select2-container--bootstrap4 .select2-results__option--highlighted[aria-selected] {
+            background: var(--kai-primary);
+        }
+        
+        /* Form controls dengan border biru KAI */
+        .form-control:focus {
+            border-color: var(--kai-primary-light);
+            box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
+        }
+        
+        /* Tab styling */
+        .nav-tabs .nav-link.active {
+            background: var(--kai-primary);
+            color: white;
+            border-color: var(--kai-primary);
+        }
+        
+        .nav-tabs .nav-link:hover {
+            border-color: var(--kai-primary-light);
+            color: var(--kai-primary);
+        }
+        
+        /* Alert styling dengan warna KAI */
+        .alert-primary {
+            background-color: rgba(30, 64, 175, 0.1);
+            border-color: rgba(30, 64, 175, 0.2);
+            color: var(--kai-primary-dark);
+        }
+        
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: #065F46;
+        }
+        
+        .alert-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.2);
+            color: #92400E;
+        }
+        
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #991B1B;
+        }
+        
+        /* Progress bar styling */
+        .progress-bar {
+            background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
+        }
+        
+        /* Custom styling untuk tampilan yang lebih clean */
+        .content-header {
+            padding: 1rem 0;
+        }
+        
+        .content-header h1 {
+            color: var(--kai-gray-800);
+            font-weight: 700;
+        }
+        
+        /* Table styling yang lebih modern */
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .table thead th {
+            background: var(--kai-gray-50);
+            border-color: var(--kai-gray-200);
+            color: var(--kai-gray-700);
+            font-weight: 600;
+        }
+        
+        .table tbody tr:hover {
+            background-color: var(--kai-gray-50);
+        }
+        
+        /* Modal styling */
+        .modal-header {
+            background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
+            color: white;
+            border-bottom: none;
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.15);
         }
     </style>
     
@@ -251,10 +376,9 @@
             const favicon = document.getElementById('favicon-main');
             const faviconUrl = "{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}";
             
-            // Fallback favicon jika logo INKA tidak tersedia
-            const fallbackFavicon = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%232c5282'/><text x='16' y='22' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-size='18' font-weight='bold'>K</text></svg>";
+            // Fallback favicon dengan tema KAI Access yang authentic
+            const fallbackFavicon = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%231E40AF;stop-opacity:1' /><stop offset='100%' style='stop-color:%233B82F6;stop-opacity:1' /></linearGradient></defs><circle cx='16' cy='16' r='16' fill='url(%23grad)'/><text x='16' y='22' text-anchor='middle' fill='white' font-family='Inter, Arial, sans-serif' font-size='16' font-weight='bold'>K</text></svg>";
             
-            // Test apakah favicon bisa dimuat
             const img = new Image();
             img.onload = function() {
                 if (favicon && favicon.href !== faviconUrl) {
@@ -276,7 +400,7 @@
             }
         });
         
-        // Global SweetAlert2 functions dengan tema biru
+        // Global SweetAlert2 functions dengan tema KAI
         window.showAlert = function(type, title, text = '') {
             Swal.fire({
                 icon: type,
@@ -289,8 +413,8 @@
                 customClass: {
                     popup: 'colored-toast'
                 },
-                background: type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1',
-                color: '#2c5282'
+                background: type === 'success' ? '#d1fae5' : type === 'error' ? '#fee2e2' : '#dbeafe',
+                color: '#1E40AF'
             });
         };
         
@@ -301,7 +425,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545',
-                cancelButtonColor: '#2c5282',
+                cancelButtonColor: '#1E40AF',
                 confirmButtonText: 'Ya, Hapus!',
                 cancelButtonText: 'Batal',
                 customClass: {
@@ -314,19 +438,15 @@
             });
         };
         
-        // Initialize pada document ready
         $(document).ready(function() {
-            // Ensure favicon is properly set
             ensureFavicon();
             
-            // Initialize Select2 dengan tema yang konsisten
             $('.select2').select2({
                 theme: 'bootstrap4',
                 placeholder: 'Pilih...',
                 allowClear: true
             });
             
-            // Initialize DataTables dengan styling yang match
             $('.data-table').DataTable({
                 responsive: true,
                 autoWidth: false,
@@ -351,70 +471,86 @@
                 lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
                 order: [[0, 'asc']]
             });
+            
+            if (document.getElementById('current-time')) {
+                updateTime();
+                setInterval(updateTime, 1000);
+            }
+            
+            $('a[href^="#"]').on('click', function(event) {
+                var target = $(this.getAttribute('href'));
+                if( target.length ) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top - 100
+                    }, 500);
+                }
+            });
+            
+            $('.alert').delay(5000).fadeOut(300);
+            
+            $('form').on('submit', function() {
+                const submitBtn = $(this).find('button[type="submit"]');
+                if (submitBtn.length) {
+                    submitBtn.prop('disabled', true);
+                    submitBtn.html('<i class="fas fa-spinner fa-spin mr-2"></i>Loading...');
+                }
+            });
         });
-    </script>
-    
-    <!-- Global Functions untuk seluruh aplikasi -->
-    <script>
-        // System Info dengan tema yang konsisten
+        
         function showSystemInfo() {
             if (typeof Swal !== 'undefined') {
                 Swal.fire({
-                    title: '<span style="color: #2c5282;">System Information</span>',
+                    title: '<span style="color: #1E40AF;">System Information</span>',
                     html: `
                         <div style="text-align: left; font-size: 14px;">
                             <table style="width: 100%; border-spacing: 8px;">
-                                <tr><td><strong style="color: #2c5282;">Application:</strong></td><td>Kasbon Online System</td></tr>
-                                <tr><td><strong style="color: #2c5282;">Laravel:</strong></td><td>{{ app()->version() }}</td></tr>
-                                <tr><td><strong style="color: #2c5282;">PHP:</strong></td><td>{{ phpversion() }}</td></tr>
-                                <tr><td><strong style="color: #2c5282;">Environment:</strong></td><td>{{ config('app.env') }}</td></tr>
+                                <tr><td><strong style="color: #1E40AF;">Application:</strong></td><td>Kasbon Online System</td></tr>
+                                <tr><td><strong style="color: #1E40AF;">Laravel:</strong></td><td>{{ app()->version() }}</td></tr>
+                                <tr><td><strong style="color: #1E40AF;">PHP:</strong></td><td>{{ phpversion() }}</td></tr>
+                                <tr><td><strong style="color: #1E40AF;">Environment:</strong></td><td>{{ config('app.env') }}</td></tr>
                                 @if(Auth::check())
-                                <tr><td><strong style="color: #2c5282;">User:</strong></td><td>{{ Auth::user()->nama ?? 'Unknown' }}</td></tr>
+                                <tr><td><strong style="color: #1E40AF;">User:</strong></td><td>{{ Auth::user()->nama ?? 'Unknown' }}</td></tr>
                                 @if(Auth::user()->userGroup)
-                                <tr><td><strong style="color: #2c5282;">Role:</strong></td><td>{{ Auth::user()->userGroup->name ?? 'No Group' }}</td></tr>
+                                <tr><td><strong style="color: #1E40AF;">Role:</strong></td><td>{{ Auth::user()->userGroup->name ?? 'No Group' }}</td></tr>
                                 @endif
                                 @endif
-                                <tr><td><strong style="color: #2c5282;">Session Time:</strong></td><td>${new Date().toLocaleString('id-ID')}</td></tr>
+                                <tr><td><strong style="color: #1E40AF;">Session Time:</strong></td><td>${new Date().toLocaleString('id-ID')}</td></tr>
                             </table>
                         </div>
                     `,
                     icon: 'info',
                     confirmButtonText: 'Close',
-                    confirmButtonColor: '#2c5282',
+                    confirmButtonColor: '#1E40AF',
                     width: 450,
                     customClass: {
                         popup: 'rounded-3'
                     }
                 });
-            } else {
-                alert('System Information:\\n\\nApplication: Kasbon Online System');
             }
         }
 
         function showComingSoon(featureName) {
             if (typeof Swal !== 'undefined') {
                 Swal.fire({
-                    title: '<span style="color: #2c5282;">Coming Soon</span>',
+                    title: '<span style="color: #1E40AF;">Coming Soon</span>',
                     html: `
                         <div style="text-align: center;">
-                            <i class="fas fa-tools fa-3x mb-3" style="color: #2c5282;"></i>
+                            <i class="fas fa-tools fa-3x mb-3" style="color: #1E40AF;"></i>
                             <p class="mb-2"><strong>${featureName}</strong> sedang dalam tahap pengembangan.</p>
                             <p class="text-muted">Fitur ini akan segera tersedia!</p>
                         </div>
                     `,
                     confirmButtonText: 'OK',
-                    confirmButtonColor: '#2c5282',
+                    confirmButtonColor: '#1E40AF',
                     width: 400,
                     customClass: {
                         popup: 'rounded-3'
                     }
                 });
-            } else {
-                alert(`${featureName} - Coming Soon!\\n\\nFitur ini sedang dalam tahap pengembangan.`);
             }
         }
 
-        // Function untuk update waktu di dashboard
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('id-ID', {
@@ -427,37 +563,6 @@
                 element.textContent = timeString;
             }
         }
-
-        // Initialize time update jika ada element current-time
-        $(document).ready(function() {
-            if (document.getElementById('current-time')) {
-                updateTime();
-                setInterval(updateTime, 1000);
-            }
-            
-            // Smooth scroll untuk anchor links
-            $('a[href^="#"]').on('click', function(event) {
-                var target = $(this.getAttribute('href'));
-                if( target.length ) {
-                    event.preventDefault();
-                    $('html, body').stop().animate({
-                        scrollTop: target.offset().top - 100
-                    }, 500);
-                }
-            });
-            
-            // Auto-hide alerts after certain time
-            $('.alert').delay(5000).fadeOut(300);
-            
-            // Loading overlay untuk form submissions
-            $('form').on('submit', function() {
-                const submitBtn = $(this).find('button[type="submit"]');
-                if (submitBtn.length) {
-                    submitBtn.prop('disabled', true);
-                    submitBtn.html('<i class="fas fa-spinner fa-spin mr-2"></i>Loading...');
-                }
-            });
-        });
     </script>
     
     @stack('scripts')
