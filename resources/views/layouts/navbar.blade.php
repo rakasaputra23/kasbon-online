@@ -1,13 +1,13 @@
-<nav class="main-header navbar navbar-expand navbar-primary navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #ffffff;">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-        <i class="fas fa-bars text-white"></i>
+        <i class="fas fa-bars text-dark"></i>
       </a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="{{ route('dashboard') }}" class="nav-link text-white">
+      <a href="{{ route('dashboard') }}" class="nav-link text-dark">
         <i class="fas fa-home mr-1"></i>Home
       </a>
     </li>
@@ -33,7 +33,7 @@
 
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link text-white" data-toggle="dropdown" href="#">
+      <a class="nav-link text-dark" data-toggle="dropdown" href="#">
         <i class="far fa-bell"></i>
         <span class="badge badge-warning navbar-badge">{{ count($notifications) }}</span>
       </a>
@@ -55,7 +55,7 @@
 
     <!-- Messages Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link text-white" data-toggle="dropdown" href="#">
+      <a class="nav-link text-dark" data-toggle="dropdown" href="#">
         <i class="far fa-comments"></i>
         <span class="badge badge-danger navbar-badge">{{ count($messages) }}</span>
       </a>
@@ -97,21 +97,21 @@
     @if($user)
       <!-- User Dropdown -->
       <li class="nav-item dropdown user-menu">
-        <a href="#" class="nav-link dropdown-toggle text-white" data-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle text-dark" data-toggle="dropdown">
           <i class="fas fa-user-circle user-icon"></i>
           <span class="d-none d-md-inline">{{ $user->nama }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <!-- User icon header -->
-          <li class="user-header bg-primary-custom">
-            <i class="fas fa-user-circle user-icon-large"></i>
-            <p>
+          <li class="user-header bg-white">
+            <i class="fas fa-user-circle user-icon-large text-primary"></i>
+            <p class="text-dark">
               {{ $user->nama }}
               @if($user->posisi)
-                <small>{{ $user->posisi }}</small>
+                <small class="text-muted">{{ $user->posisi }}</small>
               @endif
               @if($user->userGroup)
-                <br><small>{{ $user->userGroup->name }}</small>
+                <br><small class="text-muted">{{ $user->userGroup->name }}</small>
               @endif
             </p>
           </li>
@@ -151,44 +151,44 @@
   </ul>
 </nav>
 
-<!-- Enhanced CSS dengan tema biru elegan yang match dengan sidebar -->
+<!-- Enhanced CSS dengan tema putih bersih -->
 <style>
-/* Navbar styling dengan gradient biru elegan */
-.main-header.navbar-primary {
-    background: linear-gradient(135deg, #2c5282 0%, #3182ce 50%, #4299e1 100%) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Navbar styling dengan warna putih bersih */
+.main-header.navbar-white {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #eaeaea;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Navbar link styling */
-.navbar-primary .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
+.navbar-white .navbar-nav .nav-link {
+    color: rgba(0, 0, 0, 0.8) !important;
     transition: all 0.3s ease;
     border-radius: 6px;
     margin: 0 2px;
     padding: 8px 12px !important;
 }
 
-.navbar-primary .navbar-nav .nav-link:hover {
-    color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.15);
+.navbar-white .navbar-nav .nav-link:hover {
+    color: #000000 !important;
+    background-color: rgba(0, 0, 0, 0.05);
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.navbar-primary .navbar-nav .nav-link:focus {
-    color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.2);
+.navbar-white .navbar-nav .nav-link:focus {
+    color: #000000 !important;
+    background-color: rgba(0, 0, 0, 0.08);
 }
 
 /* Pushmenu button special styling */
 .nav-link[data-widget="pushmenu"] {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: 6px;
 }
 
 .nav-link[data-widget="pushmenu"]:hover {
-    background-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
     transform: translateY(-1px);
 }
 
@@ -200,8 +200,8 @@
     position: absolute;
     right: -0.375rem;
     top: -0.375rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ffffff;
 }
 
 .badge-warning {
@@ -216,8 +216,8 @@
 
 /* Dropdown menu enhancements */
 .dropdown-menu {
-    border: none;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid #eaeaea;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -256,7 +256,7 @@
 }
 
 .dropdown-item:hover {
-    background-color: rgba(44, 82, 130, 0.08);
+    background-color: rgba(0, 0, 0, 0.03);
     transform: translateX(2px);
 }
 
@@ -284,7 +284,7 @@
     background: linear-gradient(135deg, #667eea, #764ba2);
     border-radius: 50%;
     margin-right: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .avatar-placeholder i {
@@ -295,7 +295,7 @@
 .img-size-50 {
     width: 50px;
     height: 50px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .img-circle {
@@ -310,55 +310,53 @@
     width: 280px;
 }
 
-/* User icon styling dengan warna putih untuk navbar biru */
+/* User icon styling dengan warna gelap untuk navbar putih */
 .user-icon {
     font-size: 2.1rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.7);
     margin-right: 0.5rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .user-icon-large {
     font-size: 5rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: #3182ce;
     margin-bottom: 10px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* User header dengan gradient yang match */
-.user-header.bg-primary-custom {
-    background: linear-gradient(135deg, #2c5282 0%, #3182ce 50%, #4299e1 100%) !important;
+/* User header dengan warna putih */
+.user-header.bg-white {
+    background-color: #ffffff !important;
     height: 175px;
     padding: 30px 25px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    border-bottom: 1px solid #eaeaea;
 }
 
-.user-header.bg-primary-custom::before {
+.user-header.bg-white::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" patternUnits="userSpaceOnUse" width="100" height="100"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" patternUnits="userSpaceOnUse" width="100" height="100"><circle cx="25" cy="25" r="1" fill="black" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="black" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
     opacity: 0.3;
 }
 
 .user-header p {
     z-index: 5;
-    color: #fff;
+    color: #2d3748;
     font-size: 17px;
     margin-top: 10px;
     position: relative;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .user-header small {
     display: block;
     font-size: 12px;
-    opacity: 0.9;
+    color: #718096;
 }
 
 /* User footer dengan styling yang lebih modern */
@@ -374,11 +372,17 @@
     transition: all 0.3s ease;
 }
 
+.user-footer .btn-default {
+    border-color: #d1d5db;
+    background-color: #ffffff;
+    color: #4b5563;
+}
+
 .user-footer .btn-default:hover {
-    background-color: #e9ecef;
-    border-color: #adb5bd;
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .user-footer .btn-danger:hover {
@@ -419,7 +423,7 @@
         top: -0.25rem;
     }
     
-    .navbar-primary .navbar-nav .nav-link {
+    .navbar-white .navbar-nav .nav-link {
         padding: 6px 8px !important;
     }
 }
@@ -450,7 +454,7 @@
 }
 
 .dropdown-item:hover .dropdown-item-title {
-    color: #2c5282;
+    color: #3182ce;
 }
 
 /* Loading shimmer effect untuk avatar placeholder */
