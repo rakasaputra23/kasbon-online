@@ -240,7 +240,7 @@
   </div>
 </aside>
 
-<!-- Custom CSS untuk penyesuaian warna dan spacing -->
+<!-- Custom CSS untuk penyesuaian warna -->
 <style>
 /* Sidebar dengan warna biru yang lebih natural */
 .sidebar-dark-primary {
@@ -311,38 +311,5 @@
 .brand-link .brand-text {
     font-size: 15px;
     margin-left: 6px;
-}
-
-/* Override AdminLTE sidebar spacing untuk balance kiri-kanan */
-.main-sidebar .sidebar .nav-sidebar > .nav-item > .nav-link {
-    padding: 0.5rem 1.5rem 0.5rem 1rem !important; /* top right bottom left */
-}
-
-.main-sidebar .sidebar .nav-sidebar .nav-treeview > .nav-item > .nav-link {
-    padding: 0.5rem 1.5rem 0.5rem 2.25rem !important; /* submenu dengan padding kanan sama */
-}
-
-/* Override default AdminLTE nav-link styling */
-.main-sidebar .nav-sidebar .nav-link {
-    border-radius: 0.25rem;
-    margin-bottom: 0.125rem;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem !important; /* margin kanan untuk balance */
-}
-
-/* Posisi icon panah dropdown AdminLTE */
-.main-sidebar .nav-link i.right {
-    right: 1rem !important; /* jarak dari tepi kanan */
-    position: absolute;
-}
-
-/* Ensure text doesn't overlap with arrow icon */
-.main-sidebar .nav-treeview .nav-link,
-.main-sidebar .nav-sidebar > .nav-item[data-widget="treeview"] > .nav-link {
-    position: relative;
-}
-
-.main-sidebar .nav-sidebar > .nav-item[data-widget="treeview"] > .nav-link p {
-    padding-right: 2rem; /* space untuk arrow icon */
 }
 </style>
