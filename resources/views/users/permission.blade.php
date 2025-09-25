@@ -24,6 +24,71 @@
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap4.min.css">
+
+<style>
+.permission-management {
+    font-family: 'Inter', sans-serif;
+}
+
+.permission-management .btn-primary {
+    background: linear-gradient(135deg, #1E40AF, #3B82F6);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.permission-management .btn-primary:hover {
+    background: linear-gradient(135deg, #1E3A8A, #1E40AF);
+    transform: translateY(-1px);
+}
+
+.permission-management .btn-group .btn {
+    border-radius: 4px;
+    font-size: 0.75rem;
+    padding: 0.375rem 0.5rem;
+    margin: 0 1px;
+}
+
+.permission-management .table thead th {
+    background: #F9FAFB;
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.permission-management .table tbody tr:hover {
+    background: #F9FAFB;
+}
+
+.permission-management .form-control:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 0.1rem rgba(59, 130, 246, 0.25);
+}
+
+.permission-management .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.permission-management .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #1E40AF !important;
+    border-color: #1E40AF !important;
+    color: white !important;
+}
+
+.permission-management .modal-content {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.permission-management .modal-header {
+    background: #F8FAFC;
+    border-bottom: 1px solid #E2E8F0;
+    border-radius: 8px 8px 0 0;
+}
+
+.permission-management .modal-title {
+    font-weight: 600;
+    color: #1E293B;
+}
+</style>
 @endpush
 
 @section('content')
@@ -35,89 +100,90 @@
     $canView = Auth::user()->isSuperAdmin() || Auth::user()->hasPermission('permissions.show');
 @endphp
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title">
-                    <i class="fas fa-key mr-1"></i>
-                    Data Permissions
-                </h3>
-                <div class="card-tools">
-                    @if($canCreate)
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#permissionModal">
-                        <i class="fas fa-plus"></i> Tambah Permission
-                    </button>
-                    @endif
+<div class="permission-management">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-key mr-2"></i>Data Permissions
+                    </h3>
+                    <div class="card-tools">
+                        @if($canCreate)
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#permissionModal">
+                            <i class="fas fa-plus mr-1"></i>Tambah Permission
+                        </button>
+                        @endif
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="permissionTable" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Route Name</th>
-                                <th>Deskripsi</th>
-                                <th>Tanggal Dibuat</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="permissionTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Route Name</th>
+                                    <th>Deskripsi</th>
+                                    <th>Tanggal Dibuat</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal Permission -->
-<div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="permissionModalLabel">Tambah Permission</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal Permission -->
+    <div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="permissionModalLabel">Tambah Permission</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="permissionForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="route_name" class="form-label">Route Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="route_name" name="route_name" required>
+                            <div class="form-text">Contoh: user.index, user.store, dashboard</div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label">Deskripsi <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                            <div class="form-text">Deskripsi yang mudah dipahami tentang permission ini</div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save mr-1"></i>Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
-            <form id="permissionForm">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="route_name" class="form-label">Route Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="route_name" name="route_name" required>
-                        <div class="form-text">Contoh: user.index, user.store, dashboard</div>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="deskripsi" class="form-label">Deskripsi <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
-                        <div class="form-text">Deskripsi yang mudah dipahami tentang permission ini</div>
-                        <div class="invalid-feedback"></div>
-                    </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail Permission -->
+    <div class="modal fade" id="detailPermissionModal" tabindex="-1" aria-labelledby="detailPermissionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailPermissionModalLabel">Detail Permission</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="detailPermissionContent">
+                    <!-- Content will be loaded here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Simpan
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Detail Permission -->
-<div class="modal fade" id="detailPermissionModal" tabindex="-1" aria-labelledby="detailPermissionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailPermissionModalLabel">Detail Permission</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="detailPermissionContent">
-                <!-- Content will be loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -168,7 +234,33 @@ $(document).ready(function() {
                     });
                 }
             },
-            { data: 'action', name: 'action', orderable: false, searchable: false }
+            {
+                data: 'id',
+                render: function(data, type, row) {
+                    let buttons = '<div class="btn-group" role="group">';
+                    if (permissions.canView) {
+                        buttons += `<button type="button" class="btn btn-sm btn-info" onclick="viewPermission(${data})" title="Detail">
+                                      <i class="fas fa-eye"></i>
+                                   </button>`;
+                    }
+                    if (permissions.canEdit) {
+                        buttons += `<button type="button" class="btn btn-sm btn-warning" onclick="editPermission(${data})" title="Edit">
+                                      <i class="fas fa-edit"></i>
+                                   </button>`;
+                    }
+                    if (permissions.canDelete) {
+                        buttons += `<button type="button" class="btn btn-sm btn-danger" onclick="deletePermission(${data})" title="Hapus">
+                                      <i class="fas fa-trash"></i>
+                                   </button>`;
+                    }
+                    buttons += '</div>';
+                    return (!permissions.canView && !permissions.canEdit && !permissions.canDelete) ? 
+                           '<span class="text-muted">-</span>' : buttons;
+                },
+                orderable: false,
+                searchable: false,
+                width: '120px'
+            }
         ],
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/id.json'
@@ -194,7 +286,9 @@ $(document).ready(function() {
 
         const submitBtn = $(this).find('button[type="submit"]');
         const originalText = submitBtn.html();
-        submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Menyimpan...').prop('disabled', true);
+        submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i>Menyimpan...').prop('disabled', true);
+
+        clearValidationErrors();
 
         $.ajax({
             url: url,
@@ -207,26 +301,16 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('permissionModal'));
-                    modal.hide();
-                    table.ajax.reload();
-                    Swal.fire('Berhasil!', response.message, 'success');
+                    closeModal();
+                    table.ajax.reload(null, false);
+                    showSuccessAlert(response.message);
                     resetForm();
+                } else {
+                    showErrorAlert(response.message || 'Terjadi kesalahan');
                 }
             },
             error: function(xhr) {
-                if (xhr.status === 422) {
-                    let errors = xhr.responseJSON.errors;
-                    $('.form-control').removeClass('is-invalid');
-                    $('.invalid-feedback').text('');
-                    
-                    $.each(errors, function(key, value) {
-                        $(`[name="${key}"]`).addClass('is-invalid');
-                        $(`[name="${key}"]`).siblings('.invalid-feedback').text(value[0]);
-                    });
-                } else {
-                    Swal.fire('Error!', 'Terjadi kesalahan pada server', 'error');
-                }
+                handleFormErrors(xhr);
             },
             complete: function() {
                 submitBtn.html(originalText).prop('disabled', false);
@@ -235,39 +319,79 @@ $(document).ready(function() {
     });
 
     // Reset modal when closed
-    $('#permissionModal').on('hidden.bs.modal', function() {
-        resetForm();
-    });
+    $('#permissionModal').on('hidden.bs.modal', resetForm);
 
-    $(document).on('change', 'input', function() {
+    // Clear validation errors on input
+    $(document).on('change input', '.form-control', function() {
         $(this).removeClass('is-invalid');
         $(this).siblings('.invalid-feedback').text('');
     });
 });
 
-function resetForm() {
-    $('#permissionForm')[0].reset();
-    $('#permissionModalLabel').text('Tambah Permission');
-    $('#permissionForm').removeData('action').removeData('method');
+// Utility functions
+function clearValidationErrors() {
     $('.form-control').removeClass('is-invalid');
     $('.invalid-feedback').text('');
 }
 
-function editPermission(id) {
-    const permissions = {
-        canEdit: {{ $canEdit ? 'true' : 'false' }}
-    };
-    
-    if (!permissions.canEdit) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Akses Ditolak!',
-            text: 'Anda tidak memiliki izin untuk mengedit data.'
+function closeModal() {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('permissionModal'));
+    if (modal) modal.hide();
+}
+
+function showSuccessAlert(message) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: message,
+        timer: 2000,
+        showConfirmButton: false,
+        toast: true,
+        position: 'top-end',
+        background: '#d1fae5',
+        color: '#065f46'
+    });
+}
+
+function showErrorAlert(message) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: message,
+        confirmButtonColor: '#dc3545'
+    });
+}
+
+function handleFormErrors(xhr) {
+    if (xhr.status === 422) {
+        const errors = xhr.responseJSON.errors;
+        $.each(errors, function(key, value) {
+            const field = $(`[name="${key}"]`);
+            field.addClass('is-invalid');
+            field.siblings('.invalid-feedback').text(value[0]);
         });
+        showErrorAlert('Mohon periksa kembali data yang dimasukkan');
+    } else {
+        const message = xhr.responseJSON?.message || 'Terjadi kesalahan pada server';
+        showErrorAlert(message);
+    }
+}
+
+function resetForm() {
+    $('#permissionForm')[0].reset();
+    $('#permissionModalLabel').text('Tambah Permission');
+    $('#permissionForm').removeData('action').removeData('method');
+    clearValidationErrors();
+}
+
+function editPermission(id) {
+    if (!{{ $canEdit ? 'true' : 'false' }}) {
+        showErrorAlert('Anda tidak memiliki izin untuk mengedit data.');
         return;
     }
 
-    $.get(`{{ url('permissions') }}/${id}`, function(response) {
+    $.get(`{{ url('permissions') }}/${id}`)
+    .done(function(response) {
         if (response.success) {
             let data = response.data;
             $('#permissionModalLabel').text('Edit Permission');
@@ -276,123 +400,106 @@ function editPermission(id) {
             $('#route_name').val(data.route_name);
             $('#deskripsi').val(data.deskripsi);
             
-            const modal = new bootstrap.Modal(document.getElementById('permissionModal'));
-            modal.show();
+            new bootstrap.Modal(document.getElementById('permissionModal')).show();
+        } else {
+            showErrorAlert(response.message || 'Gagal memuat data permission');
         }
-    }).fail(function() {
-        Swal.fire('Error!', 'Gagal memuat data permission', 'error');
+    })
+    .fail(function(xhr) {
+        showErrorAlert(xhr.responseJSON?.message || 'Gagal memuat data permission');
     });
 }
 
 function viewPermission(id) {
-    const permissions = {
-        canView: {{ $canView ? 'true' : 'false' }}
-    };
-    
-    if (!permissions.canView) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Akses Ditolak!',
-            text: 'Anda tidak memiliki izin untuk melihat detail data.'
-        });
+    if (!{{ $canView ? 'true' : 'false' }}) {
+        showErrorAlert('Anda tidak memiliki izin untuk melihat detail data.');
         return;
     }
 
-    $.get(`{{ url('permissions') }}/${id}`, function(response) {
+    $.get(`{{ url('permissions') }}/${id}`)
+    .done(function(response) {
         if (response.success) {
             let data = response.data;
-            let createdAt = '-';
-            let updatedAt = '-';
             
-            if (data.created_at) {
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '-';
                 try {
-                    let date = new Date(data.created_at);
-                    createdAt = date.toLocaleDateString('id-ID', {
+                    return new Date(dateStr).toLocaleDateString('id-ID', {
                         weekday: 'long',
                         year: 'numeric',
                         month: 'long',
-                        day: 'numeric'
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
                     });
                 } catch (e) {
                     console.error('Error parsing date:', e);
+                    return '-';
                 }
-            }
-
-            if (data.updated_at) {
-                try {
-                    let date = new Date(data.updated_at);
-                    updatedAt = date.toLocaleDateString('id-ID', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                } catch (e) {
-                    console.error('Error parsing date:', e);
-                }
-            }
+            };
 
             let content = `
-                <table class="table table-borderless">
-                    <tr>
-                        <td style="width: 30%;"><strong>Route Name:</strong></td>
-                        <td>${data.route_name}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deskripsi:</strong></td>
-                        <td>${data.deskripsi}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tanggal Dibuat:</strong></td>
-                        <td>${createdAt}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Terakhir Diupdate:</strong></td>
-                        <td>${updatedAt}</td>
-                    </tr>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td style="width: 30%; font-weight: 600;">Route Name:</td>
+                                <td>${data.route_name || '<span class="text-muted">-</span>'}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Deskripsi:</td>
+                                <td>${data.deskripsi || '<span class="text-muted">-</span>'}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Tanggal Dibuat:</td>
+                                <td>${formatDate(data.created_at)}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Terakhir Diupdate:</td>
+                                <td>${formatDate(data.updated_at)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             `;
             
             $('#detailPermissionContent').html(content);
-            const modal = new bootstrap.Modal(document.getElementById('detailPermissionModal'));
-            modal.show();
+            new bootstrap.Modal(document.getElementById('detailPermissionModal')).show();
+        } else {
+            showErrorAlert(response.message || 'Gagal memuat detail permission');
         }
-    }).fail(function() {
-        Swal.fire('Error!', 'Gagal memuat detail permission', 'error');
+    })
+    .fail(function(xhr) {
+        showErrorAlert(xhr.responseJSON?.message || 'Gagal memuat detail permission');
     });
 }
 
 function deletePermission(id) {
-    const permissions = {
-        canDelete: {{ $canDelete ? 'true' : 'false' }}
-    };
-    
-    if (!permissions.canDelete) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Akses Ditolak!',
-            text: 'Anda tidak memiliki izin untuk menghapus data.'
-        });
+    if (!{{ $canDelete ? 'true' : 'false' }}) {
+        showErrorAlert('Anda tidak memiliki izin untuk menghapus data.');
         return;
     }
 
     Swal.fire({
-        title: 'Apakah Anda yakin?',
-        text: "Data permission akan dihapus permanen!",
+        title: 'Konfirmasi Hapus',
+        text: 'Apakah Anda yakin ingin menghapus permission ini?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
         confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal',
-        reverseButtons: true
+        cancelButtonText: 'Batal'
     }).then((result) => {
         if (result.isConfirmed) {
+            // Show loading state
             Swal.fire({
                 title: 'Menghapus...',
+                text: 'Mohon tunggu sebentar',
                 allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
                 didOpen: () => {
-                    Swal.showLoading();
+                    Swal.showLoading()
                 }
             });
 
@@ -403,14 +510,22 @@ function deletePermission(id) {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
+                    Swal.close(); // Close loading dialog
+                    
                     if (response.success) {
-                        $('#permissionTable').DataTable().ajax.reload();
-                        Swal.fire('Berhasil!', response.message, 'success');
+                        // Reload table
+                        $('#permissionTable').DataTable().ajax.reload(null, false);
+                        
+                        // Show success notification
+                        showSuccessAlert(response.message || 'Permission berhasil dihapus');
+                    } else {
+                        showErrorAlert(response.message || 'Gagal menghapus data');
                     }
                 },
                 error: function(xhr) {
-                    let message = xhr.responseJSON?.message || 'Terjadi kesalahan pada server';
-                    Swal.fire('Error!', message, 'error');
+                    Swal.close(); // Close loading dialog
+                    const message = xhr.responseJSON?.message || 'Terjadi kesalahan pada server';
+                    showErrorAlert(message);
                 }
             });
         }

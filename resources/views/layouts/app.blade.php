@@ -6,16 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Kasbon Online System')</title>
     
-    <!-- Favicon Fixed - Menggunakan logo INKA dengan fallback yang proper -->
-    <link rel="icon" type="image/png" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}" id="favicon-main">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
     <link rel="shortcut icon" type="image/png" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
     
-    <!-- Multiple sizes untuk compatibility -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}">
-    
-    <!-- Google Font: Inter untuk kesan modern seperti KAI Access -->
+    <!-- Google Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -36,24 +31,17 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
     
-    <!-- Custom CSS dengan tema Access by KAI yang authentic -->
+    <!-- Custom CSS - KAI Access Theme -->
     <style>
-        /* Override font family untuk seluruh aplikasi - menggunakan Inter seperti KAI Access */
-        * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        /* Definisi warna Access by KAI yang authentic */
         :root {
-            --kai-primary: #1E40AF;        /* Blue primary KAI */
-            --kai-primary-dark: #1E3A8A;   /* Blue darker */
-            --kai-primary-light: #3B82F6;  /* Blue lighter */
-            --kai-secondary: #F97316;      /* Orange accent KAI */
-            --kai-secondary-light: #FB923C;
-            --kai-success: #10B981;        /* Green */
-            --kai-warning: #F59E0B;        /* Amber */
-            --kai-danger: #EF4444;         /* Red */
-            --kai-light: #F8FAFC;          /* Light background */
+            --kai-primary: #1E40AF;
+            --kai-primary-dark: #1E3A8A;
+            --kai-primary-light: #3B82F6;
+            --kai-secondary: #F97316;
+            --kai-success: #10B981;
+            --kai-warning: #F59E0B;
+            --kai-danger: #EF4444;
+            --kai-light: #F8FAFC;
             --kai-white: #FFFFFF;
             --kai-gray-50: #F9FAFB;
             --kai-gray-100: #F3F4F6;
@@ -66,13 +54,15 @@
             --kai-gray-900: #111827;
         }
         
-        /* Content wrapper dengan background putih bersih seperti KAI Access */
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
         .content-wrapper {
             background: var(--kai-gray-50);
             min-height: calc(100vh - 57px);
         }
         
-        /* Card styling yang modern dengan shadow biru KAI */
         .card {
             box-shadow: 0 1px 3px rgba(30, 64, 175, 0.1), 0 1px 2px rgba(30, 64, 175, 0.06);
             border: 1px solid var(--kai-gray-200);
@@ -90,12 +80,11 @@
         .card-header {
             background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
             color: white;
-            border-radius: 12px 12px 0 0 !important;
+            border-radius: 12px 12px 0 0;
             font-weight: 600;
             border-bottom: none;
         }
         
-        /* Button styling dengan tema KAI Access yang authentic */
         .btn-primary {
             background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
             border: none;
@@ -127,7 +116,6 @@
             transform: translateY(-1px);
         }
         
-        /* Badge styling dengan warna KAI yang authentic */
         .badge-warning {
             background: var(--kai-secondary);
             color: white;
@@ -144,7 +132,10 @@
             color: white;
         }
         
-        /* Breadcrumb styling yang match */
+        .badge-danger {
+            background: var(--kai-danger);
+        }
+        
         .breadcrumb-item a {
             color: var(--kai-primary);
             text-decoration: none;
@@ -161,7 +152,6 @@
             font-weight: 600;
         }
         
-        /* Footer styling */
         .main-footer {
             background: var(--kai-white);
             border-top: 1px solid var(--kai-gray-200);
@@ -178,7 +168,6 @@
             color: var(--kai-secondary);
         }
         
-        /* Info boxes dengan warna KAI yang authentic */
         .info-box {
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(30, 64, 175, 0.1);
@@ -196,7 +185,6 @@
             color: white !important;
         }
         
-        /* DataTables styling */
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
             background: var(--kai-primary) !important;
             border-color: var(--kai-primary) !important;
@@ -209,7 +197,6 @@
             color: white !important;
         }
         
-        /* Select2 custom styling */
         .select2-container--bootstrap4 .select2-selection--single {
             border-radius: 6px;
             border-color: var(--kai-gray-300);
@@ -219,13 +206,11 @@
             background: var(--kai-primary);
         }
         
-        /* Form controls dengan border biru KAI */
         .form-control:focus {
             border-color: var(--kai-primary-light);
             box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
         }
         
-        /* Tab styling */
         .nav-tabs .nav-link.active {
             background: var(--kai-primary);
             color: white;
@@ -237,7 +222,6 @@
             color: var(--kai-primary);
         }
         
-        /* Alert styling dengan warna KAI */
         .alert-primary {
             background-color: rgba(30, 64, 175, 0.1);
             border-color: rgba(30, 64, 175, 0.2);
@@ -262,12 +246,10 @@
             color: #991B1B;
         }
         
-        /* Progress bar styling */
         .progress-bar {
             background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
         }
         
-        /* Custom styling untuk tampilan yang lebih clean */
         .content-header {
             padding: 1rem 0;
         }
@@ -277,7 +259,6 @@
             font-weight: 700;
         }
         
-        /* Table styling yang lebih modern */
         .table {
             border-radius: 8px;
             overflow: hidden;
@@ -294,7 +275,6 @@
             background-color: var(--kai-gray-50);
         }
         
-        /* Modal styling */
         .modal-header {
             background: linear-gradient(135deg, var(--kai-primary), var(--kai-primary-light));
             color: white;
@@ -369,31 +349,9 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
     
-    <!-- Favicon Fix Script -->
+    <!-- Global Configuration Script -->
     <script>
-        // Function untuk memastikan favicon tetap konsisten
-        function ensureFavicon() {
-            const favicon = document.getElementById('favicon-main');
-            const faviconUrl = "{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}";
-            
-            // Fallback favicon dengan tema KAI Access yang authentic
-            const fallbackFavicon = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%231E40AF;stop-opacity:1' /><stop offset='100%' style='stop-color:%233B82F6;stop-opacity:1' /></linearGradient></defs><circle cx='16' cy='16' r='16' fill='url(%23grad)'/><text x='16' y='22' text-anchor='middle' fill='white' font-family='Inter, Arial, sans-serif' font-size='16' font-weight='bold'>K</text></svg>";
-            
-            const img = new Image();
-            img.onload = function() {
-                if (favicon && favicon.href !== faviconUrl) {
-                    favicon.href = faviconUrl;
-                }
-            };
-            img.onerror = function() {
-                if (favicon) {
-                    favicon.href = fallbackFavicon;
-                }
-            };
-            img.src = faviconUrl;
-        }
-        
-        // CSRF Token Setup
+        // CSRF Token Setup untuk semua AJAX request
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -438,15 +396,16 @@
             });
         };
         
+        // Document ready functions
         $(document).ready(function() {
-            ensureFavicon();
-            
+            // Initialize Select2 secara global
             $('.select2').select2({
                 theme: 'bootstrap4',
                 placeholder: 'Pilih...',
                 allowClear: true
             });
             
+            // Initialize DataTable secara global
             $('.data-table').DataTable({
                 responsive: true,
                 autoWidth: false,
@@ -472,11 +431,13 @@
                 order: [[0, 'asc']]
             });
             
+            // Update waktu real-time jika ada element dengan ID current-time
             if (document.getElementById('current-time')) {
                 updateTime();
                 setInterval(updateTime, 1000);
             }
             
+            // Smooth scrolling untuk anchor links
             $('a[href^="#"]').on('click', function(event) {
                 var target = $(this.getAttribute('href'));
                 if( target.length ) {
@@ -487,8 +448,10 @@
                 }
             });
             
+            // Auto dismiss alerts setelah 5 detik
             $('.alert').delay(5000).fadeOut(300);
             
+            // Form loading state untuk mencegah double submit
             $('form').on('submit', function() {
                 const submitBtn = $(this).find('button[type="submit"]');
                 if (submitBtn.length) {
@@ -498,6 +461,7 @@
             });
         });
         
+        // Fungsi untuk menampilkan informasi sistem
         function showSystemInfo() {
             if (typeof Swal !== 'undefined') {
                 Swal.fire({
@@ -530,6 +494,7 @@
             }
         }
 
+        // Fungsi untuk fitur yang masih dalam pengembangan
         function showComingSoon(featureName) {
             if (typeof Swal !== 'undefined') {
                 Swal.fire({
@@ -551,6 +516,7 @@
             }
         }
 
+        // Fungsi untuk update waktu real-time
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('id-ID', {
