@@ -26,10 +26,47 @@
         </li>
         @endif
 
-        <!-- Kasbon Management -->
-        <li class="nav-item {{ request()->routeIs('kasbon*') || request()->routeIs('sppd*') || request()->routeIs('ppk*') ? 'menu-open' : '' }}" data-widget="treeview">
-          <a href="#" class="nav-link {{ request()->routeIs('kasbon*') || request()->routeIs('sppd*') || request()->routeIs('ppk*') ? 'active' : '' }}">
+        <!-- PPK Management -->
+        @php
+          $hasPpkAccess = Auth::user()->canAccessRoute('ppk.index') || 
+                         Auth::user()->canAccessRoute('ppk.create');
+        @endphp
+        
+        @if($hasPpkAccess)
+        <li class="nav-item {{ request()->routeIs('ppk*') ? 'menu-open' : '' }}" data-widget="treeview">
+          <a href="#" class="nav-link {{ request()->routeIs('ppk*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-money-bill-wave"></i>
+            <p>
+              PPK Management
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            @if(Auth::user()->canAccessRoute('ppk.create'))
+            <li class="nav-item">
+              <a href="{{ route('ppk.create') }}" class="nav-link {{ request()->routeIs('ppk.create') ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create PPK</p>
+              </a>
+            </li>
+            @endif
+            
+            @if(Auth::user()->canAccessRoute('ppk.index'))
+            <li class="nav-item">
+              <a href="{{ route('ppk.index') }}" class="nav-link {{ request()->routeIs('ppk.index') || (request()->routeIs('ppk.*') && !request()->routeIs('ppk.create')) ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>View PPK</p>
+              </a>
+            </li>
+            @endif
+          </ul>
+        </li>
+        @endif
+
+        <!-- Kasbon Management - Other Features (Coming Soon) -->
+        <li class="nav-item {{ request()->routeIs('kasbon*') || request()->routeIs('sppd*') ? 'menu-open' : '' }}" data-widget="treeview">
+          <a href="#" class="nav-link {{ request()->routeIs('kasbon*') || request()->routeIs('sppd*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-receipt"></i>
             <p>
               Kasbon Management
               <i class="right fas fa-angle-left"></i>
@@ -47,20 +84,6 @@
               <a href="#" class="nav-link {{ request()->routeIs('sppd.index') ? 'active' : '' }}" onclick="showComingSoon('View SPPD')">
                 <i class="far fa-circle nav-icon"></i>
                 <p>View SPPD</p>
-              </a>
-            </li>
-            
-            <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('ppk.create') ? 'active' : '' }}" onclick="showComingSoon('Create PPK')">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create PPK</p>
-              </a>
-            </li>
-            
-            <li class="nav-item">
-              <a href="#" class="nav-link {{ request()->routeIs('ppk.index') ? 'active' : '' }}" onclick="showComingSoon('View PPK')">
-                <i class="far fa-circle nav-icon"></i>
-                <p>View PPK</p>
               </a>
             </li>
           </ul>

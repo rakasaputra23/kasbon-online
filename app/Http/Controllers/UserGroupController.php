@@ -22,19 +22,22 @@ class UserGroupController extends Controller
     }
 
     /**
-     * Get user groups data for DataTables.
-     */
-    public function getData(Request $request)
-    {
+ * Get user groups data for DataTables.
+ */
+public function getData(Request $request)
+{
+    try {
+        \Log::info('DataTables Request received', ['request' => $request->all()]);
+        
         $userGroups = UserGroup::withCount('users')->select('user_groups.*');
 
-        return DataTables::of($userGroups)
+        return DataTables::eloquent($userGroups)  // GUNAKAN eloquent() BUKAN of()
             ->addIndexColumn()
             ->addColumn('users_count', function ($group) {
-                return $group->users_count;
+                return $group->users_count ?? 0;
             })
             ->addColumn('tanggal_dibuat', function ($group) {
-                return $group->created_at->format('d/m/Y H:i');
+                return $group->created_at ? $group->created_at->format('d/m/Y H:i') : '-';
             })
             ->addColumn('action', function ($group) {
                 $actions = '';
@@ -46,9 +49,31 @@ class UserGroupController extends Controller
                 }
                 return $actions;
             })
+            ->filter(function ($query) use ($request) {
+                // TAMBAHKAN FILTER UNTUK SERVER-SIDE PROCESSING
+                if ($request->has('search') && !empty($request->search['value'])) {
+                    $search = $request->search['value'];
+                    $query->where(function($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                          ->orWhere('description', 'like', "%{$search}%");
+                    });
+                }
+            })
             ->rawColumns(['action'])
             ->make(true);
+
+    } catch (\Exception $e) {
+        \Log::error('UserGroup DataTables Error: ' . $e->getMessage());
+        
+        return response()->json([
+            'draw' => $request->get('draw', 0),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0,
+            'data' => [],
+            'error' => 'Terjadi kesalahan saat memuat data'
+        ], 500);
     }
+}
 
     /**
      * Store a newly created user group in storage.
@@ -94,23 +119,28 @@ class UserGroupController extends Controller
     /**
      * Display the specified user group.
      */
-    public function show($id)
-    {
-        try {
-            $userGroup = UserGroup::with(['permissions', 'users'])->findOrFail($id);
-            
-            return response()->json([
-                'success' => true,
-                'data' => $userGroup
-            ]);
+    /**
+ * Display the specified user group.
+ */
+public function show($id)
+{
+    try {
+        // GUNAKAN with() UNTUK LOAD RELATIONS
+        $userGroup = UserGroup::with(['permissions', 'users'])->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $userGroup
+        ]);
 
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
-            ], 404);
-        }
+    } catch (\Exception $e) {
+        \Log::error('UserGroup show error: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Data tidak ditemukan'
+        ], 404);
     }
+}
 
     /**
      * Update the specified user group in storage.

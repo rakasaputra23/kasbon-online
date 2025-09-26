@@ -613,87 +613,57 @@
     }
 
     function deleteUserGroup(id) {
-    if (!{{ $canDelete ? 'true' : 'false' }}) {
-        showErrorAlert('Anda tidak memiliki izin untuk menghapus data.');
-        return;
-    }
-
-    Swal.fire({
-        title: 'Konfirmasi Hapus',
-        text: 'Apakah Anda yakin ingin menghapus user group ini?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Show loading state
-            Swal.fire({
-                title: 'Menghapus...',
-                text: 'Mohon tunggu sebentar',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading()
-                }
-            });
-
-            $.ajax({
-                url: `{{ url('user-group') }}/${id}`,
-                method: 'DELETE',
-                headers: { 
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                success: function(response) {
-                    console.log('Delete Response:', response); // Debug log
-                    Swal.close(); // Close loading dialog
-                    
-                    if (response && response.success === true) {
-                        // Reload table
-                        $('#userGroupTable').DataTable().ajax.reload(null, false);
-                        
-                        // Show success notification
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: response.message || 'User group berhasil dihapus',
-                            timer: 2000,
-                            showConfirmButton: false,
-                            toast: true,
-                            position: 'top-end',
-                            background: '#d1fae5',
-                            color: '#065f46'
-                        });
-                    } else {
-                        showErrorAlert(response.message || 'Gagal menghapus data');
-                    }
-                },
-                error: function(xhr) {
-                    console.log('Delete Error:', xhr); // Debug log
-                    Swal.close(); // Close loading dialog
-                    
-                    let message = 'Terjadi kesalahan pada server';
-                    
-                    if (xhr.responseJSON) {
-                        message = xhr.responseJSON.message || message;
-                    } else if (xhr.statusText) {
-                        message = xhr.statusText;
-                    }
-                    
-                    showErrorAlert(message);
-                },
-                complete: function(xhr, status) {
-                    console.log('Delete Complete:', status, xhr.status); // Debug log
-                }
-            });
+        if (!{{ $canDelete ? 'true' : 'false' }}) {
+            showErrorAlert('Anda tidak memiliki izin untuk menghapus data.');
+            return;
         }
-    });
-}
+
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            text: 'Apakah Anda yakin ingin menghapus user group ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Menghapus...',
+                    text: 'Mohon tunggu sebentar',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                $.ajax({
+                    url: `{{ url('user-group') }}/${id}`,
+                    method: 'DELETE',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    success: function(response) {
+                        Swal.close();
+                        
+                        if (response.success) {
+                            table.ajax.reload(null, false);
+                            showSuccessAlert(response.message || 'User group berhasil dihapus');
+                        } else {
+                            showErrorAlert(response.message || 'Gagal menghapus data');
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.close();
+                        const message = xhr.responseJSON?.message || 'Terjadi kesalahan pada server';
+                        showErrorAlert(message);
+                    }
+                });
+            }
+        });
+    }
 
     function managePermissions(id) {
         if (!{{ $canManagePermissions ? 'true' : 'false' }}) {
