@@ -86,7 +86,8 @@ Route::middleware(['auth', 'permission'])->group(function () {
     Route::get('/ppk/divisi-options', [PpkController::class, 'getDivisiOptions'])->name('ppk.divisi-options');
     Route::get('/ppk/approval-stats', [PpkController::class, 'getApprovalStats'])->name('ppk.approval-stats');
     Route::get('/ppk/next-number', [PpkController::class, 'getNextNumber'])->name('ppk.getNextNumber');
-    Route::get('/ppk/divisi-list', [PpkController::class, 'getDivisiList'])->name('ppk.getDivisiList');
+    Route::get('/ppk/divisi-list', [PpkController::class, 'getDivisiList'])
+     ->name('ppk.getDivisiList');
     Route::get('/ppk/recent-activities', [PpkController::class, 'getRecentActivities'])->name('ppk.getRecentActivities');
     Route::get('/ppk/export', [PpkController::class, 'export'])->name('ppk.export');
 

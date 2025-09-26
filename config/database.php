@@ -56,14 +56,14 @@ return [
             ]) : [],
         ],
 
-        // Database eksternal ADMS-IMS (pegawai)
+        // Database eksternal (pegawai)
         'mysql_external' => [
             'driver' => 'mysql',
             'host' => env('DB_EXTERNAL_HOST', '36.94.112.122'),
             'port' => env('DB_EXTERNAL_PORT', '9000'),
-            'database' => env('DB_EXTERNAL_DATABASE', 'adms_ims'),
-            'username' => env('DB_EXTERNAL_USERNAME', 'adms'),
-            'password' => env('DB_EXTERNAL_PASSWORD', 'database'),
+            'database' => env('DB_EXTERNAL_DATABASE', 'eoffice-ims'),
+            'username' => env('DB_EXTERNAL_USERNAME', 'office'),
+            'password' => env('DB_EXTERNAL_PASSWORD', 'database@2025!'),
             'unix_socket' => '',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

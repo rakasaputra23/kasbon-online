@@ -223,14 +223,18 @@ class Ppk extends Model
         ]);
     }
 
-    /**
-     * FIXED: Check if PPK can be deleted (HANYA draft, bukan rejected)
-     * Requirement: User tidak bisa hapus kecuali status draft
-     */
-    public function canBeDeleted()
-    {
-        return $this->status === self::STATUS_DRAFT;
-    }
+    
+/**
+ * UPDATED: Check if PPK can be deleted (draft AND rejected)
+ * Requirement: User dapat hapus PPK yang draft atau rejected
+ */
+public function canBeDeleted()
+{
+    return in_array($this->status, [
+        self::STATUS_DRAFT,
+        self::STATUS_REJECTED
+    ]);
+}
 
 
     /**

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Ppk;
 use App\Models\PpkDetail;
 use App\Models\PpkApprovalLog;
+use App\Models\MasterUnit;
 use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
@@ -137,53 +138,34 @@ class PpkController extends Controller
 
     /**
      * Get divisi options for filter dropdown
+     * Updated to use MasterUnit data
      */
     public function getDivisiOptions()
     {
         try {
-            // Get unique divisi from existing PPK records
-            $divisiFromPpk = Ppk::whereNotNull('divisi')
-                                ->where('divisi', '!=', '')
-                                ->distinct()
-                                ->pluck('divisi')
-                                ->filter()
-                                ->sort()
-                                ->values();
-
-            // Combine with predefined divisi list
-            $predefinedDivisi = [
-                'IT Department',
-                'Human Resources', 
-                'Finance Department',
-                'Marketing Department',
-                'Operations Department',
-                'Research & Development',
-                'Quality Assurance',
-                'Production Department'
-            ];
-
-            // Merge and remove duplicates
-            $allDivisi = collect($predefinedDivisi)
-                        ->merge($divisiFromPpk)
-                        ->unique()
-                        ->sort()
-                        ->values()
-                        ->map(function($divisi) {
-                            return [
-                                'value' => $divisi,
-                                'name' => $divisi
-                            ];
-                        });
+            // Get divisi from MasterUnit (external database)
+            $divisiList = MasterUnit::getDivisiList();
+            
+            // Convert to format expected by frontend
+            $divisiOptions = collect($divisiList)
+                            ->sort()
+                            ->map(function($divisi) {
+                                return [
+                                    'value' => $divisi,
+                                    'name' => $divisi
+                                ];
+                            })
+                            ->values();
 
             return response()->json([
                 'success' => true,
-                'data' => $allDivisi
+                'data' => $divisiOptions
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal memuat data divisi',
+                'message' => 'Gagal memuat data divisi: ' . $e->getMessage(),
                 'data' => []
             ], 500);
         }
@@ -452,37 +434,20 @@ class PpkController extends Controller
 
     /**
      * Get Divisi List for AJAX (for create/edit forms)
+     * Updated to use MasterUnit data
      */
     public function getDivisiList()
     {
         try {
-            $predefinedDivisi = [
-                'IT Department',
-                'Human Resources', 
-                'Finance Department',
-                'Marketing Department',
-                'Operations Department',
-                'Research & Development',
-                'Quality Assurance',
-                'Production Department'
-            ];
-            
-            // Get existing divisi from database
-            $existingDivisi = Ppk::whereNotNull('divisi')
-                                ->where('divisi', '!=', '')
-                                ->distinct()
-                                ->pluck('divisi')
-                                ->toArray();
-            
-            // Merge and remove duplicates
-            $allDivisi = array_unique(array_merge($predefinedDivisi, $existingDivisi));
+            // Get divisi from MasterUnit (external database)
+            $allDivisi = MasterUnit::getDivisiList();
             sort($allDivisi);
             
             return response()->json($allDivisi);
             
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to load divisi data'
+                'error' => 'Failed to load divisi data: ' . $e->getMessage()
             ], 500);
         }
     }

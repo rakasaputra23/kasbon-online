@@ -271,7 +271,12 @@ class User extends Authenticatable
 
         // Fallback: gunakan PpkApprovalConfig
         $fallbackLevel = PpkApprovalConfig::getLevelByUserGroup($this->user_group_id);
-        return $fallbackLevel ?? 'unknown';
+        if ($fallbackLevel !== null) {
+            return $fallbackLevel;
+        }
+
+        // Always return a string as a fallback
+        return 'unknown';
     }
 
     /**

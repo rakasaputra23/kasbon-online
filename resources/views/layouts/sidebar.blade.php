@@ -1,12 +1,13 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="{{ route('dashboard') }}" class="brand-link">
-    <img src="{{ asset('vendor/adminlte/dist/img/logo-inka.png') }}" 
-         alt="Logo Kasbon" 
-         class="brand-image elevation-0"
-         style="width: 32px; height: 32px; object-fit: contain; background: transparent; margin-top: -3px;"
-         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMUU0MEFGO3N0b3Atb3BhY2l0eToxIiAvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzNCODJGNjtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9InVybCgjZ3JhZCkiLz4KPHR4dCB4PSIxNiIgeT0iMjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iSW50ZXIsQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiPks8L3R4dD4KPC9zdmc+';">
-    <span class="brand-text font-weight-light" style="font-size: 15px; margin-left: 6px;">Kasbon Online</span>
+    <div class="brand-image-container">
+      <img src="{{ asset('vendor/adminlte/dist/img/logo-qinka.png') }}" 
+           alt="Logo INKA" 
+           class="brand-image"
+           onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDA0Mjk5Ii8+Cjx0ZXh0IHg9IjEwIiB5PSIyNiIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiPklOS0E8L3R4dD4KPHRleHQgeD0iNDUiIHk9IjE2IiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjgiIGZvbnQtc3R5bGU9Iml0YWxpYyI+TXVsdGkgU29sdXNpPC90ZXh0Pgo8dGV4dCB4PSI0NSIgeT0iMjYiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iOCIgZm9udC1zdHlsZT0iaXRhbGljIj5Tb2x1dGlvbjwvdGV4dD4KPC9zdmc+';">
+    </div>
+    <span class="brand-text font-weight-light">Kasbon Online</span>
   </a>
 
   <!-- Sidebar -->
@@ -263,15 +264,74 @@
   </div>
 </aside>
 
-<!-- Custom CSS untuk penyesuaian dengan tema KAI Access yang authentic dan terpadu -->
+<!-- Custom CSS untuk logo INKA dengan warna asli -->
 <style>
-/* Sidebar dengan gradient KAI Access yang sophisticated - Override semua style sebelumnya */
+/* Brand link styling untuk logo INKA */
+.brand-link {
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    height: 60px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.brand-image-container {
+    width: 120px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    margin-right: 12px !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+
+.brand-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+
+.brand-link:hover .brand-image {
+    /* HAPUS FILTER YANG MEMBUAT WARNA PUTIH */
+    transform: scale(1.05) !important;
+}
+
+.brand-text {
+    font-size: 16px !important;
+    font-weight: 300 !important;
+    color: white !important;
+    white-space: nowrap !important;
+    margin-left: 0 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+
+/* Biarkan transparan untuk PNG */
+.brand-image-container {
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+
+
+/* Fallback styling untuk SVG placeholder */
+.brand-image[src*="svg"] {
+    background: #004299 !important;
+    border-radius: 4px !important;
+    padding: 4px !important;
+}
+
+/* Sidebar dengan gradient KAI Access yang sophisticated */
 .sidebar-dark-primary {
     background: linear-gradient(180deg, var(--kai-primary-dark) 0%, var(--kai-primary) 100%) !important;
     box-shadow: 2px 0 10px rgba(30, 64, 175, 0.15) !important;
 }
 
-/* Brand link dengan styling premium yang konsisten dengan app.blade.php */
+/* Brand link dengan styling premium */
 .sidebar-dark-primary .brand-link {
     background: linear-gradient(135deg, var(--kai-primary-dark), var(--kai-primary)) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -285,7 +345,7 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 8px rgba(30, 64, 175, 0.3) !important;
 }
 
-/* Navigation link active state dengan efek modern yang konsisten */
+/* Navigation link active state */
 .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active, 
 .sidebar-dark-primary .nav-sidebar > .nav-item.menu-open > .nav-link {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)) !important;
@@ -297,7 +357,7 @@
     backdrop-filter: blur(10px) !important;
 }
 
-/* Navigation link hover effect yang smooth */
+/* Navigation link hover effect */
 .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
     background: rgba(255, 255, 255, 0.1) !important;
     color: var(--kai-white) !important;
@@ -308,7 +368,7 @@
     backdrop-filter: blur(5px) !important;
 }
 
-/* Treeview submenu styling yang lebih refined dan konsisten */
+/* Treeview submenu styling */
 .sidebar-dark-primary .nav-sidebar > .nav-item .nav-treeview {
     background: rgba(0, 0, 0, 0.15) !important;
     border-radius: 8px !important;
@@ -332,7 +392,7 @@
     transform: translateX(2px) !important;
 }
 
-/* Nav header styling yang konsisten dengan app.blade.php */
+/* Nav header styling */
 .sidebar-dark-primary .nav-header {
     background: rgba(0, 0, 0, 0.1) !important;
     color: rgba(255, 255, 255, 0.8) !important;
@@ -349,30 +409,7 @@
     margin-right: 8px !important;
 }
 
-/* Brand image styling yang konsisten */
-.brand-link .brand-image {
-    width: 28px !important;
-    height: 28px !important;
-    object-fit: contain !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
-    transition: transform 0.3s ease !important;
-}
-
-.brand-link:hover .brand-image {
-    transform: scale(1.1) !important;
-}
-
-.brand-link .brand-text {
-    font-size: 16px !important;
-    margin-left: 8px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.5px !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-}
-
-/* Icon styling yang konsisten */
+/* Icon styling */
 .nav-icon {
     width: 20px !important;
     text-align: center !important;
@@ -380,47 +417,17 @@
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3)) !important;
 }
 
-/* Arrow icon positioning yang konsisten dengan app.blade.php */
-.main-sidebar .nav-link i.right {
-    right: 1rem !important;
-    position: absolute !important;
-    font-size: 12px !important;
-    transition: transform 0.3s ease !important;
-}
-
-.main-sidebar .nav-item.menu-open > .nav-link i.right {
-    transform: rotate(-90deg) !important;
-}
-
-.main-sidebar .nav-sidebar > .nav-item[data-widget="treeview"] > .nav-link {
-    position: relative !important;
-}
-
-.main-sidebar .nav-sidebar > .nav-item[data-widget="treeview"] > .nav-link p {
-    padding-right: 2.5rem !important;
-}
-
-/* Scrollbar styling untuk sidebar yang konsisten */
-.sidebar::-webkit-scrollbar {
-    width: 6px !important;
-}
-
-.sidebar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-radius: 3px !important;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3) !important;
-    border-radius: 3px !important;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5) !important;
-}
-
-/* Responsive adjustments yang konsisten */
+/* Responsive adjustments */
 @media (max-width: 991.98px) {
+    .brand-image-container {
+        width: 100px !important;
+        height: 35px !important;
+    }
+    
+    .brand-text {
+        font-size: 14px !important;
+    }
+    
     .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
     .sidebar-dark-primary .nav-sidebar > .nav-item.menu-open > .nav-link {
         border-radius: 0 !important;
@@ -432,47 +439,5 @@
         transform: none !important;
         border-radius: 0 !important;
     }
-}
-
-/* Elevation untuk depth yang konsisten dengan app.blade.php */
-.main-sidebar {
-    z-index: 1038 !important;
-}
-
-.elevation-4 {
-    box-shadow: 0 4px 6px rgba(30, 64, 175, 0.1), 0 1px 3px rgba(30, 64, 175, 0.08) !important;
-}
-
-/* Override style lama yang mungkin bertabrakan */
-.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.sidebar-dark-primary .nav-sidebar > .nav-item .nav-treeview > .nav-item > .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* Pastikan brand-link tetap konsisten */
-.sidebar-dark-primary .brand-link {
-    background-color: var(--kai-primary-dark) !important;
-}
-
-.sidebar-dark-primary .brand-link:hover {
-    background-color: #2d4f75 !important;
-}
-
-/* Pastikan nav-header tetap terbaca */
-.sidebar-dark-primary .nav-header {
-    background-color: inherit !important;
-    color: rgba(255, 255, 255, 0.8) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    margin-bottom: 8px !important;
-    padding-bottom: 8px !important;
-}
-
-/* Fix untuk badge warning yang mungkin tertimpa */
-.badge-warning {
-    background-color: var(--kai-secondary) !important;
-    color: var(--kai-white) !important;
 }
 </style>

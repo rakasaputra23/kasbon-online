@@ -569,10 +569,10 @@ $(document).ready(function() {
         }
     }
 
-    // ===== DATA LOADING =====
+    // ===== DATA LOADING - ONLY DIVISI FIX =====
     function loadDivisiData() {
         $.ajax({
-            url: "{{ route('ppk.divisi-options') }}",
+            url: "{{ route('ppk.getDivisiList') }}", // FIXED: Correct route name
             method: 'GET',
             timeout: 10000
         })
@@ -580,11 +580,23 @@ $(document).ready(function() {
             const select = $('#divisi');
             select.empty().append('<option value="">Pilih Divisi</option>');
             
+            // Handle different response formats
+            let divisiList;
             if (Array.isArray(data)) {
-                data.forEach(function(divisi) {
-                    select.append(`<option value="${divisi}">${divisi}</option>`);
-                });
+                divisiList = data;
+            } else if (data.data && Array.isArray(data.data)) {
+                divisiList = data.data;
+            } else if (data.success && Array.isArray(data.data)) {
+                divisiList = data.data;
+            } else {
+                console.error('Invalid divisi data format:', data);
+                showAlert('error', 'Error', 'Format data divisi tidak valid');
+                return;
             }
+            
+            divisiList.forEach(function(divisi) {
+                select.append(`<option value="${divisi}">${divisi}</option>`);
+            });
         })
         .fail(function(xhr, status, error) {
             console.error('Error loading divisi data:', error);
