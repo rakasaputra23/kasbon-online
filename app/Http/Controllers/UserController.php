@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\User;
 use App\Models\UserGroup;
+use App\Models\MasterUnit;
 
 class UserController extends Controller
 {
@@ -36,6 +37,9 @@ class UserController extends Controller
             ->addColumn('tanggal_dibuat', function ($user) {
                 return $user->created_at->format('d/m/Y H:i');
             })
+            ->editColumn('divisi', function ($user) {
+                return $user->divisi ?: '-';
+            })
             ->addColumn('action', function ($user) {
                 $actions = '';
                 $actions .= '<button class="btn btn-sm btn-info me-1" onclick="viewUser(' . $user->id . ')" title="View"><i class="fas fa-eye"></i></button>';
@@ -53,18 +57,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => 'required|string|unique:users,nip',
-            'nama' => 'required|string|max:255',
-            'posisi' => 'required|string|max:255',
+            'nip' => 'required|unique:users',
+            'nama' => 'required',
+            'posisi' => 'required', 
+            'divisi' => 'nullable|string|max:255',
             'user_group_id' => 'required|exists:user_groups,id',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6'
         ]);
 
         $user = User::create([
             'nip' => $request->nip,
             'nama' => $request->nama,
             'posisi' => $request->posisi,
+            'divisi' => $request->divisi,
             'user_group_id' => $request->user_group_id,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -101,6 +107,7 @@ class UserController extends Controller
             'nip' => ['required', 'string', Rule::unique('users', 'nip')->ignore($user->id)],
             'nama' => 'required|string|max:255',
             'posisi' => 'required|string|max:255',
+            'divisi' => 'nullable|string|max:255',
             'user_group_id' => 'required|exists:user_groups,id',
             'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => 'nullable|string|min:8',
@@ -110,6 +117,7 @@ class UserController extends Controller
             'nip' => $request->nip,
             'nama' => $request->nama,
             'posisi' => $request->posisi,
+            'divisi' => $request->divisi,
             'user_group_id' => $request->user_group_id,
             'email' => $request->email,
         ];
@@ -178,6 +186,7 @@ class UserController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'posisi' => 'required|string|max:255',
+            'divisi' => 'nullable|string|max:255',
             'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => 'nullable|string|min:8|confirmed',
         ]);
@@ -185,6 +194,7 @@ class UserController extends Controller
         $updateData = [
             'nama' => $request->nama,
             'posisi' => $request->posisi,
+            'divisi' => $request->divisi,
             'email' => $request->email,
         ];
 
@@ -195,5 +205,26 @@ class UserController extends Controller
         $user->update($updateData);
 
         return redirect()->route('profile')->with('success', 'Profile berhasil diupdate.');
+    }
+
+    /**
+     * Get list divisi untuk dropdown
+     */
+    public function getDivisiList()
+    {
+        try {
+            $divisiList = MasterUnit::getDivisiList();
+            return response()->json([
+                'success' => true,
+                'data' => $divisiList
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error loading divisi list: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memuat data divisi',
+                'data' => []
+            ]);
+        }
     }
 }

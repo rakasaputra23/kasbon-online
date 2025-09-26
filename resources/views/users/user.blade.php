@@ -110,6 +110,7 @@
                                     <th>NIP</th>
                                     <th>Nama</th>
                                     <th>Posisi</th>
+                                    <th>Divisi</th>
                                     <th>Email</th>
                                     <th>User Group</th>
                                     <th>Tanggal Dibuat</th>
@@ -160,16 +161,23 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="user_group_id" class="form-label">User Group <span class="text-danger">*</span></label>
-                                    <select class="form-control select2" id="user_group_id" name="user_group_id" required>
-                                        <option value="">Pilih User Group</option>
-                                        @foreach($userGroups as $group)
-                                            <option value="{{ $group->id }}">{{ $group->name }}</option>
-                                        @endforeach
+                                    <label for="divisi" class="form-label">Divisi</label>
+                                    <select class="form-control select2" id="divisi" name="divisi">
+                                        <option value="">Pilih Divisi</option>
                                     </select>
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="user_group_id" class="form-label">User Group <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="user_group_id" name="user_group_id" required>
+                                <option value="">Pilih User Group</option>
+                                @foreach($userGroups as $group)
+                                    <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
@@ -232,10 +240,63 @@ $(document).ready(function() {
     $('.select2').select2({
         theme: 'bootstrap4',
         width: '100%',
-        placeholder: 'Pilih User Group...',
         allowClear: true,
         dropdownParent: $('#userModal')
     });
+
+    // Initialize Divisi Select2 with search
+    $('#divisi').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Pilih atau ketik untuk mencari divisi...',
+        allowClear: true,
+        dropdownParent: $('#userModal'),
+        ajax: {
+            url: '{{ route("user.divisi-list") }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                if (data.success) {
+                    return {
+                        results: data.data.map(function(item) {
+                            return {
+                                id: item,
+                                text: item
+                            };
+                        })
+                    };
+                }
+                return { results: [] };
+            },
+            cache: true
+        },
+        minimumInputLength: 0,
+        tags: false
+    });
+
+    // Load divisi options on modal show
+    $('#userModal').on('show.bs.modal', function() {
+        loadDivisiOptions();
+    });
+
+    function loadDivisiOptions() {
+        $.get('{{ route("user.divisi-list") }}')
+        .done(function(response) {
+            if (response.success) {
+                const divisiSelect = $('#divisi');
+                divisiSelect.empty().append('<option value="">Pilih Divisi</option>');
+                
+                response.data.forEach(function(divisi) {
+                    divisiSelect.append(new Option(divisi, divisi, false, false));
+                });
+                
+                divisiSelect.trigger('change');
+            }
+        })
+        .fail(function() {
+            showErrorAlert('Gagal memuat data divisi');
+        });
+    }
 
     // Initialize DataTable
     let table = $('#userTable').DataTable({
@@ -249,6 +310,7 @@ $(document).ready(function() {
             { data: 'nip', name: 'nip' },
             { data: 'nama', name: 'nama' },
             { data: 'posisi', name: 'posisi' },
+            { data: 'divisi', name: 'divisi' },
             { data: 'email', name: 'email' },
             { data: 'user_group', name: 'user_group', orderable: false },
             { data: 'tanggal_dibuat', name: 'created_at' },
@@ -281,7 +343,7 @@ $(document).ready(function() {
             }
         ],
         language: { 
-            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/id.json'
+            url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/id.json' // Gunakan https
         },
         responsive: true,
         pageLength: 10,
@@ -423,6 +485,13 @@ function editUser(id) {
             $('#nip').val(data.data.nip);
             $('#nama').val(data.data.nama);
             $('#posisi').val(data.data.posisi);
+            
+            // Set divisi value
+            if (data.data.divisi) {
+                const divisiOption = new Option(data.data.divisi, data.data.divisi, true, true);
+                $('#divisi').append(divisiOption).trigger('change');
+            }
+            
             $('#user_group_id').val(data.data.user_group_id).trigger('change');
             $('#email').val(data.data.email);
             $('#password').prop('required', false);
@@ -475,6 +544,10 @@ function showDetail(id) {
                             <tr>
                                 <td style="font-weight: 600;">Posisi:</td>
                                 <td>${user.posisi || '<span class="text-muted">-</span>'}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Divisi:</td>
+                                <td>${user.divisi || '<span class="text-muted">-</span>'}</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: 600;">Email:</td>

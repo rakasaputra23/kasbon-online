@@ -39,6 +39,8 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::put('/', [UserController::class, 'updateProfile'])->name('profile.update');
     });
 
+    Route::get('/user/divisi-list', [UserController::class, 'getDivisiList'])->name('user.divisi-list');
+
     // ==========================
     // 👥 USER MANAGEMENT
     // ==========================
@@ -50,6 +52,7 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::put('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
+
 
     Route::get('/user-group', [UserGroupController::class, 'index'])->name('user.group');
     Route::prefix('user-group')->name('user.group.')->group(function () {
